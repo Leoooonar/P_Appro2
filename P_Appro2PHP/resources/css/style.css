@@ -1,0 +1,189 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; 
+}
+
+body
+{
+  display: flex; /* Utilisez flexbox */
+  flex-direction: column; /* Orientation verticale */
+  margin: auto;
+  min-height: 100vh; /* Utilisez vh au lieu de % */
+  width: 100%;
+  align-items: stretch; /* assure que les enfants s'étendent en largeur */
+}
+
+html, body {
+    overflow-x: hidden; /* Cache le débordement horizontal */
+    width: 100%;
+    overflow-y: auto; /* permet le défilement vertical si nécessaire */
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1; /* Cela permet à main de s'étendre pour occuper tout l'espace disponible */
+}
+
+a{
+    color: black;
+}
+/*************************/
+/*        HEADER         */
+/*************************/
+
+#headContainer{
+    height: 80px;
+    background-color: #242633;
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    padding: 0 20px; 
+}
+
+
+nav{
+    height: 50px;
+    background-color: #10141B;
+}
+
+.button-74 {
+    background-color: #fbeee00a;
+    border: 2px solid #10141B;
+    border-radius: 30px;
+    box-shadow: #10141B 4px 4px 0 0;
+    color: #fdfdfd;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 10px;
+  }
+  
+  .button-74:hover {
+    background-color: #ffffff3a;
+  }
+  
+  .button-74:active {
+    box-shadow: #10141B 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-74 {
+      min-width: 100px;
+      padding: 0 25px;
+    }
+  }
+
+.myAccount{
+    background-color: #fbeee00a;
+    border: 2px solid #10141B;
+    border-radius: 5px;
+    box-shadow: #10141B 4px 4px 0 0;
+    color: #fdfdfd;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    .button-74 {
+      min-width: 100px;
+      padding: 0 25px;
+    }
+    .myAccount {
+      min-width: 100px;
+      padding: 0 25px;
+    }
+  }
+
+/*************************/
+/* LOGIN ET L'INSCRIPTION*/
+/*************************/
+
+.login-png
+{
+    width: 40%;
+    height: auto;
+}
+
+.form-title{
+    text-align: center;
+    margin: 10px;
+    color: black;
+}
+
+.form-content
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000000b9; 
+    background-color: #0000000c;
+    width: 240px;
+    padding: 20px; 
+    margin: auto;
+}
+
+input, textarea, select, option{
+    color: black; /* Définir la couleur du texte en noir avec la priorité */
+    height: 25px;
+    margin: 5px;
+}
+
+.label-content {
+    text-align: center; /* Ajoutez cette ligne pour centrer le texte des labels */
+}
+
+#submit
+{
+    margin: 15px;
+    width: 40%;
+    color: black;
+}
+
+.inscription
+{
+    margin: 10px;
+}
+
+/*************************/
+/*************************/
+/*************************/
+
+
+
+/*************************/
+/*        FOOTER         */
+/*************************/
+
+footer {
+    display: flex;
+    height: 80px;
+    width: 100%;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    background-color: #10141B;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+
+#mail {
+    color: white;
+}

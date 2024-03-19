@@ -6,11 +6,7 @@
 *  *  *   * Description : page d'inscription du site                                         * * * *
 ***************************************************************************************************/
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-/*
-session_start();
-include("./models/database.php");
-$db = new Database();
-*/
+
 //Vérifie si l'utilisateur est connecté
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
@@ -35,8 +31,8 @@ if (isset($_SESSION['user'])) {
                 } 
                 else 
                 {
-                    echo '<a href="login.php"><button class="button-74" role="button">Login</button></a>';
-                    echo '<a href="#"><button class="button-74" role="button">Inscription</button></a>';
+                    echo '<a href="login.php"><button class="button-base button-74" role="button">Login</button></a>';
+                    echo '<a href="#"><button class="button-base button-74" role="button">Inscription</button></a>';
                 }
             ?>
         </div>
@@ -71,7 +67,7 @@ if (isset($_SESSION['user'])) {
                     <br>
                 </div>
                 <div class="label-content">
-                    <input type="submit" id='submit' value='LOGIN' >
+                    <input type="submit" id='submit' value='INSCRIRE' >
                 </div>
             </form>
         </div>  

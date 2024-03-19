@@ -20,10 +20,31 @@ class Database {
     // Méthode pour préparer et exécuter une requête avec des paramètres
     private function queryPrepare($query, $params = array()) {
         try {
+            // Vérifier si la connexion à la base de données est établie
+            if(!$this->conn) {
+                throw new PDOException("La connexion à la base de données n'est pas établie.");
+            }
+
+            // Préparer la requête SQL
             $stmt = $this->conn->prepare($query);
-            $stmt->execute($params);
+
+            // Vérifier si la préparation de la requête a échoué
+            if(!$stmt) {
+                throw new PDOException("Erreur lors de la préparation de la requête.");
+            }
+
+            // Exécuter la requête avec les paramètres fournis
+            $result = $stmt->execute($params);
+
+            // Vérifier si l'exécution de la requête a échoué
+            if(!$result) {
+                throw new PDOException("Erreur lors de l'exécution de la requête.");
+            }
+
+            // Retourner l'objet PDOStatement résultant
             return $stmt;
         } catch(PDOException $e) {
+            // Gérer l'erreur
             echo "Error: " . $e->getMessage();
             return false;
         }
@@ -62,6 +83,35 @@ class Database {
             // Une erreur s'est produite lors de l'insertion
             echo "Error: " . $e->getMessage();
             return false;
+        }
+    }
+
+    public function updateUserInfo($userId, $newUsername, $newFirstname, $newLastname, $newEmail, $newGender) {
+        try {
+            $query = "UPDATE t_user 
+                      SET useUsername = :username,
+                          useFirstname = :firstname, 
+                          useLastname = :lastname, 
+                          useMail = :email, 
+                          useGender = :gender 
+                      WHERE user_id = :userId";
+    
+            $params = array(
+                ':username' => $newUsername,
+                ':firstname' => $newFirstname,
+                ':lastname' => $newLastname,
+                ':email' => $newEmail,
+                ':gender' => $newGender,
+                ':userId' => $userId
+            );
+    
+            $this->queryPrepare($query, $params);
+    
+            return true; // Retourne true si la mise à jour est réussie
+        } catch(PDOException $e) {
+            // Gérer l'erreur
+            echo "Error: " . $e->getMessage();
+            return false; // Retourne false en cas d'erreur
         }
     }
 }

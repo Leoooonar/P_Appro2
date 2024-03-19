@@ -50,6 +50,7 @@ a{
     justify-content: flex-end; 
     align-items: center; 
     padding: 0 20px; 
+    color: white;
 }
 
 
@@ -58,35 +59,45 @@ nav{
     background-color: #10141B;
 }
 
+/* Classe de base pour les boutons */
+.button-base {
+  background-color: #fbeee01c;
+  border: 2.5px solid #4e4e4e52;
+  border-radius: 30px;
+  box-shadow: #10141B 4px 4px 0 0;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  font-size: 20px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 10px;
+}
+
 .button-74 {
-    background-color: #fbeee010;
-    border: 2px solid #10141B;
-    border-radius: 30px;
-    box-shadow: #10141B 4px 4px 0 0;
-    color: #fdfdfd;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 0 18px;
-    line-height: 50px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 10px;
-  }
+  color: white;
+}
+
+.button-73 {
+  color: black;
+}
+
+/* Styles partagés pour les états hover et active */
+.button-base:hover {
+  background-color: #ffffff3a;
+}
+
+.button-base:active {
+  box-shadow: #10141B 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
   
-  .button-74:hover {
-    background-color: #ffffff3a;
-  }
-  
-  .button-74:active {
-    box-shadow: #10141B 2px 2px 0 0;
-    transform: translate(2px, 2px);
-  }
-  
+
   @media (min-width: 768px) {
     .button-74 {
       min-width: 100px;
@@ -94,21 +105,28 @@ nav{
     }
   }
 
+  @media (min-width: 768px) {
+    .button-73 {
+      min-width: 100px;
+      padding: 0 25px;
+    }
+  }
+
 .myAccount{
-    background-color: #fbeee010;
-    border: 2px solid #10141B;
+    background-color: #fbeee01c;
+    border: 2.5px solid #4e4e4e52;
     border-radius: 5px;
     box-shadow: #10141B 4px 4px 0 0;
     color: #fdfdfd;
     cursor: pointer;
     display: inline-block;
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: 400;
+    font-size: 20px;
     padding: 0 18px;
     line-height: 50px;
     text-align: center;
     text-decoration: none;
-    margin-right: 30px;
+    margin-right: 35px;
 }
 
 .dropdown-content {
@@ -171,7 +189,7 @@ nav{
     border: 2px solid #000000b9; 
     background-color: #0000000c;
     width: 240px;
-    padding: 20px; 
+    padding: 30px; 
     margin: auto;
 }
 
@@ -195,6 +213,32 @@ input, textarea, select, option{
 .inscription
 {
     margin: 10px;
+}
+
+/*************************/
+/*      USER DETAILS     */
+/*************************/
+
+.userContainer{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  flex-wrap: wrap;
+  width: 300px;
+  border: 2px solid #000000b9; 
+  padding: 20px;
+  color: black;
+}
+
+.userButton{
+  display: flex;
+  justify-content: center;
+  color: black;
+}
+
+.userButton :hover{
+  background-color: #24263313;
 }
 
 /*************************/

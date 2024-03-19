@@ -3,12 +3,12 @@
 /***************************************************************************************************
 *  *  *   * Auteurs: Leonar                                               *   *  *  *   *  *  *  * *
 *  *  *   * Date: 18.03.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
-*  *  *   * Description : page d'accueil du site                                             * * * *
+*  *  *   * Description : page détails de l'utilisateur                                      * * * *
 ***************************************************************************************************/
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
 session_start();
-include("./models/database.php");
+include("../../models/database.php");
 $db = new Database();
 
 // Vérifie si l'utilisateur est connecté
@@ -25,8 +25,8 @@ if (isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="./resources/css/style.css">
+    <title>Profil utilisateur</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
     <body>
         <main>
@@ -37,8 +37,8 @@ if (isset($_SESSION['user'])) {
                         echo '<div class="myAccount">Mon compte</div>';
                         echo '<a href="javascript:void(0)" class="dropbtn"></a>';
                         echo '<div class="dropdown-content">';
-                        echo '<a href="./resources/views/userDetails.php">Détail du compte</a>';
-                        echo '<a href="./resources/views/logout.php">Déconnexion</a>';
+                        echo '<a href=#>Détail du compte</a>';
+                        echo '<a href="logout.php">Déconnexion</a>';
                         echo '</div>';
                         echo '</li>';
                     } else {
@@ -51,9 +51,26 @@ if (isset($_SESSION['user'])) {
                 <ul>
                 </ul>
             </nav>
+            <br>
             <?php
                 if ($isLoggedIn) {
-                    echo '<p id="welcomeText">Bienvenue, ' . $user['useUsername'] . '</p>';
+                    echo '<div class="userContainer">';
+                        echo '<p><strong>Nom d\'utilisateur:</strong> ' . $user['useUsername'] . '</p>';
+                        echo '<br>';
+                        echo '<p><strong>Prénom:</strong> ' . ($user['useFirstname'] ?? 'Non renseigné') . '</p>';
+                        echo '<br>';
+                        echo '<p><strong>Nom:</strong> ' . ($user['useLastname'] ?? 'Non renseigné') . '</p>';
+                        echo '<br>';
+                        echo '<p><strong>Adresse e-mail:</strong> ' . ($user['useMail'] ?? 'Non renseignée') . '</p>';
+                        echo '<br>';
+                        echo '<p><strong>Genre:</strong> ' . ($user['useGender'] ?? 'Non renseigné') . '</p>';
+                        echo '<br>';
+
+                        // Bouton d'ajouts/modifications d'informations
+                        echo '<div class="userButton">';
+                            echo '<a href="userEditDetails.php" class="button-base button-73">Modifier</a>';
+                        echo '</div>';
+                    echo '</div>';
                 }
             ?> 
         </main>

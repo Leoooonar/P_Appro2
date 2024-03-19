@@ -35,8 +35,8 @@ if (isset($_SESSION['user'])) {
                     } 
                     else 
                     {
-                        echo '<a href="./resources/views/authentification/login.php"><button class="button-74" role="button">Login</button></a>';
-                        echo '<a href="./resources/views/authentification/register.php"><button class="button-74" role="button">Inscription</button></a>';
+                        echo '<a href="#"><button class="button-74" role="button">Login</button></a>';
+                        echo '<a href="register.php"><button class="button-74" role="button">Inscription</button></a>';
                     }
                 ?>
             </div>
@@ -46,7 +46,7 @@ if (isset($_SESSION['user'])) {
             </nav>
             <br>
             <div class="form-content">
-                <form action="userLoginCheck.php" method="POST">
+                <form action="../../../controllers/authentification/loginCheck.php" method="POST">
                     <div class="login-png">    
                         <img src="../../../resources/img/login.png" alt="">
                     </div>
@@ -67,7 +67,7 @@ if (isset($_SESSION['user'])) {
                         <input type="submit" id='submit' value='LOGIN' >
                     </div>
                 </form>
-                <a href="UserRegistration.php"><h4 class="inscription">S'inscrire</h4></a>
+                <a href="register.php"><h4 class="inscription">S'inscrire</h4></a>
             </div>  
         </main>
         <footer>

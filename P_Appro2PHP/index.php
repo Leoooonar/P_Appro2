@@ -49,6 +49,7 @@ if (isset($_SESSION['user'])) {
             </div>
             <nav class="navbar">
                 <ul>
+                    <h1><a href="#">Accueil</a></h1>
                 </ul>
             </nav>
             <?php

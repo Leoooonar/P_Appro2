@@ -6,7 +6,6 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif; 
-    
 }
 
 body
@@ -36,7 +35,8 @@ main {
 }
 
 a{
-    color: black;
+  text-decoration: none;
+  color: white;
 }
 
 /*************************/
@@ -57,11 +57,16 @@ a{
 nav{
     height: 50px;
     background-color: #10141B;
+    text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    color: white;
 }
 
 /* Classe de base pour les boutons */
 .button-base {
-  background-color: #fbeee01c;
+  background-color: #ffffff2c;
   border: 2.5px solid #4e4e4e52;
   border-radius: 30px;
   box-shadow: #10141B 4px 4px 0 0;
@@ -89,7 +94,7 @@ nav{
 
 /* Styles partagés pour les états hover et active */
 .button-base:hover {
-  background-color: #ffffff3a;
+  background-color: #ffffff3d;
 }
 
 .button-base:active {
@@ -235,10 +240,6 @@ input, textarea, select, option{
   display: flex;
   justify-content: center;
   color: black;
-}
-
-.userButton :hover{
-  background-color: #24263313;
 }
 
 /*************************/

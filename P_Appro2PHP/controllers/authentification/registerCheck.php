@@ -9,6 +9,12 @@
 
 session_start();
 
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user'])) {
+    header("Location: ../resources/views/authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
+}
+
 // Inclure le fichier database.php
 include("../../models/database.php");
 

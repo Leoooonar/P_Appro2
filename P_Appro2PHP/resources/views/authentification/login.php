@@ -6,11 +6,7 @@
 *  *  *   * Description : page de connexion du site                                          * * * *
 ***************************************************************************************************/
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-/*
-session_start();
-include("./models/database.php");
-$db = new Database();
-*/
+
 //Vérifie si l'utilisateur est connecté
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
@@ -42,6 +38,7 @@ if (isset($_SESSION['user'])) {
             </div>
             <nav class="navbar">
                 <ul>
+                    <h1><a href="../../../index.php"><- Accueil</a></h1>
                 </ul>
             </nav>
             <br>

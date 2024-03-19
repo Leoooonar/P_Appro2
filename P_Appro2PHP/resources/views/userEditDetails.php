@@ -17,6 +17,8 @@ if (isset($_SESSION['user'])) {
     $isLoggedIn = true;
 } else {
     $isLoggedIn = false;
+    header("Location: ./authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
 }
 ?>
 
@@ -49,6 +51,7 @@ if (isset($_SESSION['user'])) {
             </div>
             <nav class="navbar">
                 <ul>
+                    <h1><a href="../../index.php"><- Accueil</a></h1>
                 </ul>
             </nav>
             <br>
@@ -74,7 +77,7 @@ if (isset($_SESSION['user'])) {
                     </select>
                     <br>
                     <div class="userButton">
-                        <button type="submit" class="button-base button-73">Sauvegarder</button> 
+                        <button type="submit" class="button-base button-73">Sauvegarder</button>
                     </div>
                     <br>
                 </form>

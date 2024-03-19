@@ -39,6 +39,15 @@ a{
   color: white;
 }
 
+h4{
+  color: black;
+  text-decoration: underline;
+}
+
+h4:hover{
+  color: rgba(0, 0, 0, 0.582);
+}
+
 /*************************/
 /*        HEADER         */
 /*************************/

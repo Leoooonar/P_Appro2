@@ -14,7 +14,7 @@ Ouvrir le projet P_Appro2 dans visuel code et sélectionner index.php -> Clique 
 
 # Installation d'un serveur windows PHP (non Admin)
 
-Dans le cas d'un utilisateur lambda, on peut passer par uWamp ou XAMPP qui vont interpréter le php sur un serveur local, exemple avec uWamp :
+Dans le cas d'un utilisateur n'ayant pas les droits admin dans son environnement de travail, on peut passer par uWamp ou XAMPP qui vont interpréter le php sur un serveur local, exemple avec uWamp :
 
 - Télécharger uWamp (dernière version) -> https://www.uwamp.com/fr/
 

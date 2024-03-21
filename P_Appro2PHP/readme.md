@@ -1,4 +1,4 @@
-# Installation de Visual Studio Code & PHP (Admin)
+# Installation de Visual Studio Code & PHP & (Admin)
 
 VSC : Pour l'environnement de code, télécharger la dernière version de Visual Studio Code : https://code.visualstudio.com/
 
@@ -12,7 +12,7 @@ VSC : Pour l'environnement de code, télécharger la dernière version de Visual
 
 Ouvrir le projet P_Appro2 dans visuel code et sélectionner index.php -> Clique droit sur l'interface de code -> Lancer le projet avec PHP Server
 
-# Installation d'un serveur windows PHP (non Admin)
+# Installation d'un serveur windows PHP & MySQL / PhpMyAdmin (non Admin)
 
 Dans le cas d'un utilisateur n'ayant pas les droits admin dans son environnement de travail, on peut passer par uWamp ou XAMPP qui vont interpréter le php sur un serveur local, exemple avec uWamp :
 
@@ -23,6 +23,10 @@ Dans le cas d'un utilisateur n'ayant pas les droits admin dans son environnement
 - Lancer le .exe du dossier. Sur le panel de l'application -> cliquer sur le bouton "Dossier www"
 
 - Extraire le projet P_Appro_2 dans le /www 
+
+- On se rend ensuite de nouveau sur le panel d'application -> cliquer sur le bouton "PhpMyAdmin"
+
+- taper "root", "root", puis importer la db dans le dossier "MySQLConnector" dans la section "importer".
 
 - Depuis le panel uWamp, cliquer sur "Navigation web" et naviguer jusqu'à index.php
 

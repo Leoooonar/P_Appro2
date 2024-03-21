@@ -55,6 +55,8 @@ if (isset($_SESSION['user'])) {
                 </ul>
             </nav>
             <br>
+            <h2 id="secondTitle">Edition des informations</h2>
+            <hr>
             <div class="userContainer">
                 <form action="../../controllers/userDetailsCheck.php" method="POST">
                     <label for="username">Pseudonyme:</label>

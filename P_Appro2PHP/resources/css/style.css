@@ -178,9 +178,9 @@ nav{
     }
   }
 
-/*************************/
-/* LOGIN ET L'INSCRIPTION*/
-/*************************/
+/**************************/
+/* LOGIN ET L'INSCRIPTION */
+/**************************/
 
 .login-png
 {
@@ -229,6 +229,12 @@ input, textarea, select, option{
     margin: 10px;
 }
 
+#pageBefore{
+  color: black;
+  text-decoration: underline;
+  font-style:italic;
+}
+
 /*************************/
 /*      USER DETAILS     */
 /*************************/
@@ -242,6 +248,7 @@ input, textarea, select, option{
   width: 300px;
   border: 2px solid #000000b9; 
   padding: 20px;
+  margin-top: 20px;
   color: black;
 }
 
@@ -249,6 +256,11 @@ input, textarea, select, option{
   display: flex;
   justify-content: center;
   color: black;
+}
+
+#secondTitle{
+  text-align: center;
+  margin: 15px;
 }
 
 /*************************/

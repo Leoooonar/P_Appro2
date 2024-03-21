@@ -15,6 +15,30 @@ include("../../models/database.php");
 // Initialiser le tableau des erreurs
 $errors = array();
 
+//Structure HTML
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Login</title>
+    <link rel="stylesheet" href="../../resources/css/style.css">
+</head>
+<body>
+    <main>
+        <div id="headContainer">
+        <a href="../../resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>
+        <a href="../../resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>
+        </div>
+        <nav class="navbar">
+        <ul>
+        <h1><a href="../../index.php">Accueil</a></h1>
+        </ul>
+        </nav>
+        <br>
+<?php
+
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
@@ -23,12 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Vérifier si le nom d'utilisateur est vide
     if (empty($username)) {
-        $errors[] = "Le nom d'utilisateur est requis";
+        $errors[] = "Le nom d'utilisateur est requis.";
     }
 
     // Vérifier si le mot de passe est vide
     if (empty($password)) {
-        $errors[] = "Le mot de passe est requis";
+        $errors[] = "Le mot de passe est requis.";
     }
 
     // Si aucun erreur n'a été détectée, vérifier les informations de connexion
@@ -55,6 +79,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if (!empty($errors)) {
     foreach ($errors as $error) {
         echo $error . "<br>";
+        echo '<br>';
     }
 }
 ?>
+<a id="pageBefore" href="../../resources/views/authentification/login.php"><-Page précédente</a>
+</main>
+<footer>
+    <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
+</footer>

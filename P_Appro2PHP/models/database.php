@@ -1,6 +1,7 @@
 <?php
 class Database {
-    private $host = "localhost";
+    private $host = "host.docker.internal"; 
+    private $port = "6033"; 
     private $username = "root";
     private $password = "root";
     private $database = "db_P_Appro2";
@@ -9,7 +10,7 @@ class Database {
     // Constructor
     public function __construct() {
         try {
-            $this->conn = new PDO("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password);
+            $this->conn = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database}", $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             echo "Connection failed: " . $e->getMessage();

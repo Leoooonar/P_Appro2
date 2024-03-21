@@ -55,6 +55,8 @@ if (isset($_SESSION['user'])) {
                 </ul>
             </nav>
             <br>
+            <h2 id="secondTitle">Informations générales</h2>
+            <hr>
             <?php
                 if ($isLoggedIn) {
                     echo '<div class="userContainer">';

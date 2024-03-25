@@ -31,36 +31,61 @@ if (isset($_SESSION['user'])) {
     <body>
         <main>
             <div id="headContainer">
-                <?php
-                    if ($isLoggedIn) {
-                        echo '<li class="nav-item dropdown">';
-                        echo '<div class="myAccount">Mon compte</div>';
-                        echo '<a href="javascript:void(0)" class="dropbtn"></a>';
-                        echo '<div class="dropdown-content">';
-                        echo '<a href="./resources/views/userDetails.php">Détail du compte</a>';
-                        echo '<a href="./resources/views/logout.php">Déconnexion</a>';
-                        echo '</div>';
-                        echo '</li>';
-                    } else {
-                        echo '<a href="./resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
-                        echo '<a href="./resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
-                    }
-                ?>
+                <div class="left-content">
+                    <a href="#"><img src="./resources/img/etmlImg.jpg" alt="ETML logo" class="headerImage"></a>
+                    <a href="#"><img src="./resources/img/carImg.png" alt="Parking logo" class="headerImage"></a>
+                </div>
+                <div class="right-content">
+                    <?php
+                        if ($isLoggedIn) {
+                            echo '<li class="nav-item dropdown">';
+                            echo '<div class="myAccount">Mon compte</div>';
+                            echo '<a href="javascript:void(0)" class="dropbtn"></a>';
+                            echo '<div class="dropdown-content">';
+                            echo '<a href="./resources/views/userDetails.php">Détail du compte</a>';
+                            echo '<a href="./resources/views/logout.php">Déconnexion</a>';
+                            echo '</div>';
+                            echo '</li>';
+                        } else {
+                            echo '<a href="./resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
+                            echo '<a href="./resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
+                        }
+                    ?>
+                </div>
             </div>
             <nav class="navbar">
                 <ul>
-                    <h1><a href="#">Accueil</a></h1>
+                    <li><h1><a href="#">Louer une place</a></h1></li>
+                    <li><h1><a href="#">Accueil</a></h1></li>
+                    <li><h1><a href="#">Liste des places</a></h1></li>
                 </ul>
             </nav>
-            <?php
-                if ($isLoggedIn) {
-                    echo '<p id="welcomeText">Bienvenue, ' . $user['useUsername'] . '</p>';
-                }
-            ?> 
+            <div id="contentContainer">
+                <div id="textBlock">
+                    <p id="paragraph">
+                        ETML Parking offre la flexibilité de réserver une place de stationnement<br>
+                        pour une demi-journée ou pour l'intégralité de la journée,<br>
+                        en fonction des places disponibles.
+                    </p>
+                    <hr>
+                    <br>
+                    <p id="secondParagraph">
+                        La création d'un compte est nécessaire<br>
+                        pour pouvoir louer une place.
+                    </p>
+                </div>
+                <br>
+                <div id="map" style="height:350px; width:35%;"></div>
+            </div>
+            <br>
         </main>
         <footer>
             <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
         </footer>
+        <script src="./resources/js/script.js"></script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3aYjSZTMIR3hUvvXJ37vt4AwugfIhtC8&callback=initMap">
+        </script>
     </body>
 </html>
 

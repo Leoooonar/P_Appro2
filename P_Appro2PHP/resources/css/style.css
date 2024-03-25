@@ -48,34 +48,81 @@ h4:hover{
   color: rgba(0, 0, 0, 0.582);
 }
 
+button:hover{
+  background-color: grey;
+}
+
 /*************************/
 /*        HEADER         */
 /*************************/
 
 #headContainer{
     height: 80px;
-    background-color: #242633;
+    background-color: #ffffff;
     display: flex; 
-    justify-content: flex-end; 
     align-items: center; 
     padding: 0 20px; 
     color: white;
 }
 
+h1 :hover{
+  text-decoration: underline;
+}
+
+.left-content {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.headerImage {
+  width: auto; 
+  height: 50px; 
+  margin-right: 10px; 
+}
+
+.right-content {
+  margin-left: auto; 
+  display: flex;
+}
+
+@media (max-width: 570px) {
+  .headerImage {
+    height: 35px;
+  }
+}
+
+@media (max-width: 481px) {
+  .headerImage {
+    height: 30px;
+  }
+}
+
+@media (max-width: 450px) {
+  .headerImage {
+    height: 20px;
+  }
+}
 
 nav{
-    height: 50px;
+    height: 60px;
     background-color: #10141B;
     text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     color: white;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
 }
 
 /* Classe de base pour les boutons */
 .button-base {
-  background-color: #ffffff2c;
+  background-color: #ffffff17;
   border: 2.5px solid #4e4e4e52;
   border-radius: 30px;
   box-shadow: #10141B 4px 4px 0 0;
@@ -94,7 +141,7 @@ nav{
 }
 
 .button-74 {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .button-73 {
@@ -103,7 +150,7 @@ nav{
 
 /* Styles partagés pour les états hover et active */
 .button-base:hover {
-  background-color: #ffffff3d;
+  background-color: #4b4b4b21;
 }
 
 .button-base:active {
@@ -123,6 +170,13 @@ nav{
     .button-73 {
       min-width: 100px;
       padding: 0 25px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1{
+      font-size: 17px;
+      margin:10px;
     }
   }
 
@@ -177,6 +231,40 @@ nav{
       padding: 0 25px;
     }
   }
+
+/*************************/
+/*        ACCUEIL        */
+/*************************/
+
+#contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px; 
+}
+
+#textBlock {
+  background: #F0F0F0; 
+  border-radius: 8px; 
+  padding: 20px; 
+  width: 50%; 
+  margin-bottom: 20px; 
+  text-align: center; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+#mapContainer {
+  width: 80%;
+  height: auto;
+}
+
+/* Styles spécifiques pour les paragraphes */
+#paragraph, #secondParagraph {
+  color: #333; /* Couleur du texte */
+  font-size: 1.25rem; 
+  line-height: 1.5; 
+  margin-bottom: 1em; 
+}
 
 /**************************/
 /* LOGIN ET L'INSCRIPTION */

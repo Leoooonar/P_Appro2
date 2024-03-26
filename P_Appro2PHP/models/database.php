@@ -7,7 +7,7 @@ class Database {
     private $database = "db_P_Appro2";
     private $conn;
 
-    // Constructor
+    //Constructor
     public function __construct() {
         try {
             $this->conn = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database}", $this->username, $this->password);
@@ -18,7 +18,7 @@ class Database {
         }
     }
 
-    // Méthode pour préparer et exécuter une requête avec des paramètres
+    //Méthode pour préparer et exécuter une requête avec des paramètres
     private function queryPrepare($query, $params = array()) {
         try {
             // Vérifier si la connexion à la base de données est établie
@@ -51,7 +51,7 @@ class Database {
         }
     }
 
-    // Méthode pour vérifier le login
+    //Méthode pour vérifier le login
     public function checkLogin($username, $password) {
         $query = "SELECT * FROM t_user WHERE useUsername = :username";
         $stmt = $this->queryPrepare($query, array(':username' => $username));
@@ -67,7 +67,7 @@ class Database {
         return false;
     }
 
-    // Méthode pour enregistrer un nouvel utilisateur
+    //Méthode pour enregistrer un nouvel utilisateur
     public function registerUser($username, $password) {
         try {
             // Hasher le mot de passe
@@ -115,5 +115,99 @@ class Database {
             return false; // Retourne false en cas d'erreur
         }
     }
+
+    public function getPlaceTypes() {
+        $sql = "SELECT place_id, plaType FROM t_places";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    //Méthode qui renvoie l'ID correct pour le type de place donné
+    public function getPlaceIdByType($typeDePlace) {
+        $stmt = $this->conn->prepare('SELECT place_id FROM t_places WHERE plaType = ?');
+        $stmt->execute([$typeDePlace]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['place_id'] : null;
+    }
+
+    //Méthode vérifiant si la place est déjà prise ou pas
+    public function isPlaceTaken($dateDeReservation, $matin, $apresMidi, $typeDePlace) {
+        $sql = "SELECT COUNT(*) FROM t_reservation 
+                WHERE resDate = :dateDeReservation 
+                AND ((resMatin = :matin AND :matin = 1) OR (resApresMidi = :apresMidi AND :apresMidi = 1))
+                AND places_fk = :typeDePlace";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            ':dateDeReservation' => $dateDeReservation,
+            ':matin' => $matin,
+            ':apresMidi' => $apresMidi,
+            ':typeDePlace' => $typeDePlace
+        ]);
+    
+        return $stmt->fetchColumn() > 0;
+    }    
+
+    //Récupère les informations d'une réservation spécifique
+    public function getReservationDetailsById($reservationId) {
+        $sql = "SELECT * FROM t_reservation WHERE reservation_id = :reservationId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Retourne un tableau associatif des détails de la réservation
+    }
+
+    //Récupère le prix d'une place spécifique en se basant sur son ID
+    public function getPlacePriceById($placeId) {
+        $sql = "SELECT plaPrice FROM t_places WHERE place_id = :placeId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':placeId', $placeId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchColumn(); // Retourne le prix de la place
+    }
+
+    //Récupère le nom par rapport à l'id
+    public function getPlaceTypeNameById($placeId) {
+        $sql = "SELECT plaType FROM t_places WHERE place_id = :placeId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':placeId', $placeId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        // Récupère la première colonne du résultat de la requête
+        $plaType = $stmt->fetchColumn();
+    
+        return $plaType;
+    }
+
+    // Enregistre la réservation de place de parking dans la db
+    public function saveReservation($typeDePlace, $dateDeReservation, $matin, $apresMidi, $resStatut, $userId) {
+        try {
+            // Préparation de la requête d'insertion
+            $sql = "INSERT INTO t_reservation (resDate, resMatin, resApresMidi, resStatut, places_fk, user_fk) VALUES (:dateDeReservation, :matin, :apresMidi, :resStatut, :typeDePlace, :userId)";
+            $stmt = $this->conn->prepare($sql);
+    
+            // Liaison des paramètres
+            $stmt->bindParam(':dateDeReservation', $dateDeReservation);
+            $stmt->bindParam(':matin', $matin, PDO::PARAM_BOOL);
+            $stmt->bindParam(':apresMidi', $apresMidi, PDO::PARAM_BOOL);
+            $stmt->bindParam(':resStatut', $resStatut);
+            $stmt->bindParam(':typeDePlace', $typeDePlace, PDO::PARAM_INT);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    
+            // Exécution de la requête
+            $stmt->execute();
+    
+            // Retourne l'ID de la réservation insérée
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            // En cas d'erreur, retourne false
+            error_log("Erreur lors de l'insertion de la réservation: " . $e->getMessage());
+            return false;
+        }
+    }      
 }
 ?>

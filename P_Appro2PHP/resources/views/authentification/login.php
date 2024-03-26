@@ -24,21 +24,33 @@ if (isset($_SESSION['user'])) {
     <body>
         <main>
             <div id="headContainer">
-                <?php
-                    if (isset($_SESSION['user'])) 
-                    {
-                        echo '<div class="myAccount">Mon compte</div>';
-                    } 
-                    else 
-                    {
-                        echo '<a href="#"><button class="button-base button-74" role="button">Login</button></a>';
-                        echo '<a href="register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
-                    }
-                ?>
+                <div class="left-content">
+                    <a href="../../../index.php"><img src="../../img/etmlImg.jpg" alt="ETML logo" class="headerImage"></a>
+                    <a href="../../../index.php"><img src="../../img/carImg.png" alt="Parking logo" class="headerImage"></a>
+                </div>
+                <div class="right-content">
+                    <?php
+                        if ($isLoggedIn) {
+                            echo '<li class="nav-item dropdown">';
+                            echo '<div class="myAccount">Mon compte</div>';
+                            echo '<a href="javascript:void(0)" class="dropbtn"></a>';
+                            echo '<div class="dropdown-content">';
+                            echo '<a href="./resources/views/userDetails.php">Détail du compte</a>';
+                            echo '<a href="./resources/views/logout.php">Déconnexion</a>';
+                            echo '</div>';
+                            echo '</li>';
+                        } else {
+                            echo '<a href="#"><button class="button-base button-74" role="button">Login</button></a>';
+                            echo '<a href="register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
+                        }
+                    ?>
+                </div>
             </div>
             <nav class="navbar">
                 <ul>
-                    <h1><a href="../../../index.php"><- Accueil</a></h1>
+                    <li><h1><a href="../parkingLocation.php">Louer une place</a></h1></li>
+                    <li><h1><a href="../../../index.php">Accueil</a></h1></li>
+                    <li><h1><a href="../parkingList.php">Liste des places</a></h1></li>
                 </ul>
             </nav>
             <br>
@@ -67,6 +79,7 @@ if (isset($_SESSION['user'])) {
                 <a href="register.php"><h4 class="inscription">S'inscrire</h4></a>
             </div>  
         </main>
+        <br>
         <footer>
             <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
         </footer>

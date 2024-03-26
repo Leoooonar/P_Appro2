@@ -31,3 +31,9 @@ CREATE TABLE t_reservation (
     FOREIGN KEY (places_fk) REFERENCES t_places(place_id),
     FOREIGN KEY (user_fk) REFERENCES t_user(user_id)
 );
+
+INSERT INTO t_places (plaType, plaPrice) VALUES ('Voiture', '0.00');
+INSERT INTO t_places (plaType, plaPrice) VALUES ('Camion', '0.00');
+INSERT INTO t_places (plaType, plaPrice) VALUES ('Vélo électrique', '0.00');
+INSERT INTO t_places (plaType, plaPrice) VALUES ('Place de direction', '5.00');
+INSERT INTO t_places (plaType, plaPrice) VALUES ('Salle de conférence', '0.00');

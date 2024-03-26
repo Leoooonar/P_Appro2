@@ -33,25 +33,33 @@ if (isset($_SESSION['user'])) {
     <body>
         <main>
             <div id="headContainer">
-                <?php
-                    if ($isLoggedIn) {
-                        echo '<li class="nav-item dropdown">';
-                        echo '<div class="myAccount">Mon compte</div>';
-                        echo '<a href="javascript:void(0)" class="dropbtn"></a>';
-                        echo '<div class="dropdown-content">';
-                        echo '<a href=#>Détail du compte</a>';
-                        echo '<a href="logout.php">Déconnexion</a>';
-                        echo '</div>';
-                        echo '</li>';
-                    } else {
-                        echo '<a href="./resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
-                        echo '<a href="./resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
-                    }
-                ?>
+                <div class="left-content">
+                    <a href="../../index.php"><img src="../img/etmlImg.jpg" alt="ETML logo" class="headerImage"></a>
+                    <a href="../../index.php"><img src="../img/carImg.png" alt="Parking logo" class="headerImage"></a>
+                </div>
+                <div class="right-content">
+                    <?php
+                        if ($isLoggedIn) {
+                            echo '<li class="nav-item dropdown">';
+                            echo '<div class="myAccount">Mon compte</div>';
+                            echo '<a href="javascript:void(0)" class="dropbtn"></a>';
+                            echo '<div class="dropdown-content">';
+                            echo '<a href="userDetails.php">Détail du compte</a>';
+                            echo '<a href="logout.php">Déconnexion</a>';
+                            echo '</div>';
+                            echo '</li>';
+                        } else {
+                            echo '<a href="./authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
+                            echo '<a href="./authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
+                        }
+                    ?>
+                </div>
             </div>
             <nav class="navbar">
                 <ul>
-                    <h1><a href="../../index.php"><- Accueil</a></h1>
+                    <li><h1><a href="parkingLocation.php">Louer une place</a></h1></li>
+                    <li><h1><a href="../../index.php">Accueil</a></h1></li>
+                    <li><h1><a href="parkingList.php">Liste des places</a></h1></li>
                 </ul>
             </nav>
             <br>
@@ -78,10 +86,8 @@ if (isset($_SESSION['user'])) {
                         <option value="O" <?php echo ($user['useGender'] == 'O') ? 'selected' : ''; ?>>Autre</option>
                     </select>
                     <br>
-                    <div class="userButton">
-                        <button type="submit" class="button-base button-73">Sauvegarder</button>
-                    </div>
                     <br>
+                        <button type="submit">Sauvegarder</button>
                 </form>
             </div>
         </main>

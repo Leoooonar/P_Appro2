@@ -21,8 +21,17 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-//Récupère les places dans la base de donnée
-$placeTypes = $db->getPlaceTypes();
+    // Assurons-nous que les variables sont définies pour éviter des erreurs PHP
+    $typeDePlaceId = isset($_POST['placeType']) ? $_POST['placeType'] : '';
+    $dateDeReservation = isset($_POST['reservationDate']) ? $_POST['reservationDate'] : '';
+    $matin = isset($_POST['morning']) ? "Oui" : "Non";
+    $apresMidi = isset($_POST['afternoon']) ? "Oui" : "Non";
+
+    // Utiliser la nouvelle méthode pour récupérer le nom du type de place
+    $typeDePlaceName = $db->getPlaceTypeNameById($typeDePlaceId);
+
+    // Récupérer le prix basé sur l'ID du type de place
+    $placePrice = $db->getPlacePriceById($typeDePlaceId);
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +39,7 @@ $placeTypes = $db->getPlaceTypes();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réservation parking</title>
+    <title>Confirmation réservation parking</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
     <body>
@@ -71,38 +80,46 @@ $placeTypes = $db->getPlaceTypes();
             <div id="contentContainer">
                 <div id="textBlock">
                     <p id="secondParagraph">
-                        Veuillez remplir le formulaire ci-dessous pour louer votre place de parc.<br>
-                        voir la <a href="parkingList.php" id="list">liste des places</a> disponibles.
+                        La place de parking est :
+                        <br>
+                        <span id="available">Disponible</span>
+                        <br>
+                        Veuillez vérifier les informations avant de procéder à la confirmation.
                     </p>
                 </div>
             </div>    
-            <div class="userContainer">
-                <form action="../../controllers/parkingLocationCheck.php" method="post">
-                    <div class="form-group">
-                        <label for="placeType">Type de place :</label>
-                        <select name="placeType" id="placeType">
-                            <?php foreach ($placeTypes as $type): ?>
-                                <option value="<?php echo htmlspecialchars($type['place_id']); ?>">
-                                    <?php echo htmlspecialchars($type['plaType']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="reservationDate">Date de réservation :</label>
-                        <input type="date" name="reservationDate" id="reservationDate">
-                    </div>
-                    <div class="checkbox-group">
-                        <label>
-                            <input type="checkbox" name="morning" id="morning">
-                            Le matin
-                        </label>
-                        <label>
-                            <input type="checkbox" name="afternoon" id="afternoon">
-                            L'après-midi
-                        </label>
-                    </div>
-                    <button type="submit">Suivant</button>
+            <div class="parkingReservation">
+                <?php
+                    if (isset($_SESSION['reservationData'])) {
+                        $reservationData = $_SESSION['reservationData'];
+                        $typeDePlace = $reservationData['typeDePlace'];
+                        $dateDeReservation = $reservationData['dateDeReservation'];
+                        $matin = $reservationData['matin'];
+                        $apresMidi = $reservationData['apresMidi'];
+
+                        // Utiliser $typeDePlace pour récupérer le nom du type de place et le prix
+                        $typeDePlaceName = $db->getPlaceTypeNameById($typeDePlace);
+                        $placePrice = $db->getPlacePriceById($typeDePlace);
+
+                        // Affichage des informations
+                        echo "Type de place: " . htmlspecialchars($typeDePlaceName) . "<br>";
+                        echo "Date de réservation: " . htmlspecialchars($dateDeReservation) . "<br>";
+                        echo "Matin: " . ($matin ? "Oui" : "Non") . "<br>";
+                        echo "Après-midi: " . ($apresMidi ? "Oui" : "Non") . "<br>";
+                        echo "Prix à payer : " . $placePrice . " CHF<br>";
+                    } else {
+                        // Gérer le cas où les données ne sont pas disponibles
+                        echo "Informations de réservation non disponibles.";
+                    }
+                ?>
+                <!-- Formulaire de confirmation avec champs cachés -->
+                <form action="../../controllers/parkingLocationConfirmationCheck.php" method="post">
+                    <input type="hidden" name="placeType" value="<?php echo htmlspecialchars($typeDePlaceId); ?>">
+                    <input type="hidden" name="reservationDate" value="<?php echo htmlspecialchars($dateDeReservation); ?>">
+                    <input type="hidden" name="morning" value="<?php echo isset($_POST['morning']) ? 1 : 0; ?>">
+                    <input type="hidden" name="afternoon" value="<?php echo isset($_POST['afternoon']) ? 1 : 0; ?>">
+
+                    <button type="submit">Confirmer la réservation</button>
                 </form>
             </div>
         </main>

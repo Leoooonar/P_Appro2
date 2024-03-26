@@ -55,9 +55,9 @@ if (isset($_SESSION['user'])) {
             </div>
             <nav class="navbar">
                 <ul>
-                    <li><h1><a href="#">Louer une place</a></h1></li>
-                    <li><h1><a href="#">Accueil</a></h1></li>
-                    <li><h1><a href="#">Liste des places</a></h1></li>
+                    <li><h1><a href="./resources/views/parkingLocation.php">Louer une place</a></h1></li>
+                    <li><h1><a href="#" class="active">Accueil</a></h1></li>
+                    <li><h1><a href="./resources/views/parkingList.php">Liste des places</a></h1></li>
                 </ul>
             </nav>
             <div id="contentContainer">
@@ -70,7 +70,7 @@ if (isset($_SESSION['user'])) {
                     <hr>
                     <br>
                     <p id="secondParagraph">
-                        La création d'un compte est nécessaire<br>
+                        La <a href="./resources/views/authentification/register.php" id="list">création d'un compte</a> est nécessaire<br>
                         pour pouvoir louer une place.
                     </p>
                 </div>

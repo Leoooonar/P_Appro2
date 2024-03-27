@@ -84,7 +84,7 @@ if (isset($_SESSION['user'])) {
         </footer>
         <script src="./resources/js/script.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3aYjSZTMIR3hUvvXJ37vt4AwugfIhtC8&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByDn1WH69c8R4s2oah7If_Rrl4UG4eayw&callback=initMap">
         </script>
     </body>
 </html>

@@ -45,40 +45,32 @@ $user = $_SESSION['user'];
         <br>
         <?php
         // Vérification de la méthode de requête
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Récupération des données du formulaire
-            $typeDePlace = $_POST['placeType'];
-            $dateDeReservation = $_POST['reservationDate'];
-            $matin = $_POST['morning'];
-            $apresMidi = $_POST['afternoon'];
-
-            // ID de l'utilisateur connecté
-            $userId = $_SESSION['user']['user_id'];
-            // Statut par défaut de la réservation
-            $resStatut = "En attente";
-
-            // Insertion des données dans la base de données
-            $reservationId = $db->saveReservation($typeDePlace, $dateDeReservation, $matin, $apresMidi, $resStatut, $userId);
-
-            // Affichage du résultat de la réservation
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['reservationData'])) {
+            $reservationData = $_SESSION['reservationData'];
+            $userId = $_SESSION['user']['user_id']; // Assure-toi que c'est bien stocké comme ça
+        
+            $result = $db->saveReservation(
+                $reservationData['typeDePlace'],
+                $reservationData['dateDeReservation'],
+                $reservationData['matin'],
+                $reservationData['apresMidi'],
+                "En attente", // Statut par défaut
+                $userId
+            );
             echo '<div id="contentContainer">';
-            if ($reservationId) {
-                echo "Réservation confirmée. ID de réservation: " . $reservationId;
+            if ($result) {
+                echo "Réservation confirmée avec succès. ID de réservation: $result";
+                unset($_SESSION['reservationData']); // Nettoyer les données de session
             } else {
-                echo "Erreur lors de la réservation.";
-                echo '<br>';
-                echo $typeDePlace;
-                echo '<br>';
-                echo $dateDeReservation;
-                echo '<br>';
-                echo $matin;
-                echo '<br>';
-                echo $apresMidi;
+                echo "Erreur lors de la confirmation de la réservation.";
             }
+        } else {
+            // Gérer le cas d'erreur ou de tentative d'accès direct à ce script
+            echo "Accès non autorisé ou données manquantes.";
         }
         ?>
         <br>
-        <a id="pageBefore" href="../resources/views/parkingLocation.php">Retour à l'accueil</a>
+        <a id="pageBefore" href="../index.php">Retour à l'accueil</a>
     </div>
     </main>
     <footer>
@@ -86,3 +78,4 @@ $user = $_SESSION['user'];
     </footer>
 </body>
 </html>
+

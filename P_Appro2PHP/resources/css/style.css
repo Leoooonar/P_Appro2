@@ -420,6 +420,11 @@ button[type="submit"]:hover {
   color: rgb(0, 97, 0);
 }
 
+#unavailable{
+  color: rgb(202, 10, 10);
+}
+
+
 .parkingReservation{
   display: flex;
   justify-content: center;
@@ -429,6 +434,47 @@ button[type="submit"]:hover {
   border: 2px solid #000000b9; 
   padding: 40px;
   margin-top: 20px;
+}
+
+/*************************/
+/* TABLEAU LISTE RESERV. */
+/*************************/
+
+.date-selector {
+  margin: 20px 0;
+  text-align: center;
+}
+
+table {
+  width: 75%;
+  border-collapse: collapse;
+  margin:auto;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+#refreshSection{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  flex-wrap: wrap;
+  width: 20%;
 }
 
 /*************************/

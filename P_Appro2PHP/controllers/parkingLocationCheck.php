@@ -51,16 +51,17 @@ $user = $_SESSION['user'];
 <?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $typeDePlace = $_POST['placeType'] ?? '';
-    $dateDeReservation = $_POST['reservationDate'] ?? '';
+    // Attribution des valeurs POST à des variables locales pour la validation
+    $typeDePlace = $_POST['placeType'] ?? null;
+    $dateDeReservation = $_POST['reservationDate'] ?? null;
     $matin = isset($_POST['morning']) ? 1 : 0;
     $apresMidi = isset($_POST['afternoon']) ? 1 : 0;
 
     // Validation
-    if (!$typeDePlace) {
+    if (empty($typeDePlace)) {
         $errors['typeDePlace'] = "Le type de place est requis.";
     }
-    if (!$dateDeReservation) {
+    if (empty($dateDeReservation)) {
         $errors['dateDeReservation'] = "La date de réservation est requise.";
     } elseif (new DateTime($dateDeReservation) < new DateTime()) {
         $errors['dateDeReservation'] = "La date de réservation doit être dans le futur.";
@@ -72,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérification de la disponibilité de la place
     if (count($errors) === 0) {
         if ($db->isPlaceTaken($dateDeReservation, $matin, $apresMidi, $typeDePlace)) {
-            $errors['placeTaken'] = "La place sélectionnée est déjà prise pour la date et le moment choisis.";
+            $errors['placeTaken'] = "La place sélectionnée pour la date et le moment choisis est : <div id='unavailable'>Indisponible</div>";
         } else {
         // Stockage des données dans la session
         $_SESSION['reservationData'] = [

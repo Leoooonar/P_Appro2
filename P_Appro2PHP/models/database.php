@@ -209,5 +209,50 @@ class Database {
             return false;
         }
     }      
+
+    //Récupère les réservations pour la liste 
+    public function getReservationsForDate($date) {
+        try {
+            // Préparation de la requête SQL
+            $stmt = $this->conn->prepare("SELECT * FROM t_reservation WHERE resDate = :resDate");
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':resDate', $date);
+
+            // Exécution de la requête
+            $stmt->execute();
+
+            // Récupération des résultats
+            $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $reservations;
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la récupération des réservations : " . $e->getMessage());
+            return []; // Retourne un tableau vide en cas d'erreur
+        }
+    }
+
+    //Récupère le nom à partir de la foreignkey de réservation
+    public function getUserNameById($userId) {
+        try {
+            // Préparation de la requête SQL pour récupérer le nom de l'utilisateur
+            $stmt = $this->conn->prepare("SELECT useUsername FROM t_user WHERE user_id = :userId");
+            
+            // Liaison des paramètres
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+            // Exécution de la requête
+            $stmt->execute();
+
+            // Récupération du résultat
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Retourne le nom de l'utilisateur si trouvé
+            return $result ? $result['useUsername'] : 'Inconnu';
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la récupération du nom de l'utilisateur : " . $e->getMessage());
+            return 'Inconnu'; // Retourne une valeur par défaut en cas d'erreur
+        }
+    }
 }
 ?>

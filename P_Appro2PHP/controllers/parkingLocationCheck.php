@@ -17,7 +17,15 @@ $db = new Database();
 // Initialiser le tableau des erreurs
 $errors = [];
 
-$user = $_SESSION['user'];
+// Vérifie si l'utilisateur est connecté
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+    $isLoggedIn = true;
+} else {
+    $isLoggedIn = false;
+    header("Location: ./authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
+}
 
 ?>
 <!DOCTYPE html>
@@ -36,8 +44,21 @@ $user = $_SESSION['user'];
                 <a href="../index.php"><img src="../resources/img/carImg.png" alt="Parking logo" class="headerImage"></a>
             </div>
             <div class="right-content">
-                <a href="../resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>
-                <a href="../resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>
+                <?php
+                    if ($isLoggedIn) {
+                        echo '<li class="nav-item dropdown">';
+                        echo '<div class="myAccount">Mon compte</div>';
+                        echo '<a href="javascript:void(0)" class="dropbtn"></a>';
+                        echo '<div class="dropdown-content">';
+                        echo '<a href="../resources/views/userDetails.php">Détail du compte</a>';
+                        echo '<a href="../resources/views/logout.php">Déconnexion</a>';
+                        echo '</div>';
+                        echo '</li>';
+                    } else {
+                        echo '<a href="./authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
+                        echo '<a href="./authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
+                    }
+                ?>
             </div>
         </div>
         <nav class="navbar">

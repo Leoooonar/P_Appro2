@@ -66,7 +66,7 @@ if (isset($_SESSION['user'])) {
             <h2 id="secondTitle">Edition des informations</h2>
             <hr>
             <div class="userContainer">
-                <form action="../../controllers/userDetailsCheck.php" method="POST">
+                <form action="../../controllers/userDetailsCheck.php" id="details" method="POST">
                     <label for="username">Pseudonyme:</label>
                     <input type="text" id="username" name="username" value="<?php echo $user['useUsername']; ?>">
                     <br>
@@ -91,6 +91,7 @@ if (isset($_SESSION['user'])) {
                 </form>
             </div>
         </main>
+        <br>
         <footer>
             <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
         </footer>

@@ -67,7 +67,7 @@ if (isset($_SESSION['user'])) {
             <hr>
             <?php
                 if ($isLoggedIn) {
-                    echo '<div class="userContainer">';
+                    echo '<div class="infoContainer">';
                         echo '<p><strong>Nom d\'utilisateur:</strong> ' . $user['useUsername'] . '</p>';
                         echo '<br>';
                         echo '<p><strong>Prénom:</strong> ' . ($user['useFirstname'] ?? 'Non renseigné') . '</p>';

@@ -10,16 +10,16 @@
 
 body
 {
-  display: flex; /* Utilisez flexbox */
-  flex-direction: column; /* Orientation verticale */
+  display: flex; 
+  flex-direction: column; 
   margin: auto;
-  min-height: 100vh; /* Utilisez vh au lieu de % */
+  min-height: 100vh; 
   width: 100%;
   align-items: stretch; /* assure que les enfants s'étendent en largeur */
 }
 
 html, body {
-    overflow-x: hidden; /* Cache le débordement horizontal */
+    overflow-x: hidden; /* cache le débordement horizontal */
     width: 100%;
     overflow-y: auto; /* permet le défilement vertical si nécessaire */
     margin: 0;
@@ -27,11 +27,11 @@ html, body {
 }
 
 li {
-  list-style-type: none; /* Supprime le style par défaut de la liste */
+  list-style-type: none; 
 }
 
 main {
-    flex: 1; /* Cela permet à main de s'étendre pour occuper tout l'espace disponible */
+    flex: 1; /* permet à main de s'étendre pour occuper tout l'espace disponible, comme ça le footer reste en bas*/
 }
 
 a{
@@ -85,24 +85,6 @@ h1 :hover{
   display: flex;
 }
 
-@media (max-width: 570px) {
-  .headerImage {
-    height: 35px;
-  }
-}
-
-@media (max-width: 481px) {
-  .headerImage {
-    height: 30px;
-  }
-}
-
-@media (max-width: 450px) {
-  .headerImage {
-    height: 20px;
-  }
-}
-
 /* Classe de base pour les boutons */
 .button-base {
   background-color: #ffffff17;
@@ -131,7 +113,6 @@ h1 :hover{
   color: black;
 }
 
-/* Styles partagés pour les états hover et active */
 .button-base:hover {
   background-color: #4b4b4b21;
 }
@@ -142,24 +123,20 @@ h1 :hover{
 }
   
 
-  @media (min-width: 768px) {
-    .button-74 {
-      min-width: 100px;
-      padding: 0 25px;
+  @media (max-width: 400px) {
+    #headContainer{
+      height: auto;
     }
-  }
 
-  @media (min-width: 768px) {
-    .button-73 {
-      min-width: 100px;
-      padding: 0 25px;
+    .right-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-  }
 
-  @media (max-width: 480px) {
-    h1{
-      font-size: 17px;
-      margin:10px;
+    .left-content{
+      flex-wrap: wrap;
+      flex-direction: column;
     }
   }
 
@@ -204,6 +181,47 @@ h1 :hover{
   display: block;
 }
 
+@media (max-width: 570px) {
+  .headerImage {
+    height: 35px;
+  }
+}
+
+@media (max-width: 481px) {
+  .headerImage {
+    height: 30px;
+  }
+}
+
+@media (max-width: 450px) {
+  .headerImage {
+    height: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .button-73 {
+    min-width: 100px;
+    padding: 0 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1{
+    font-size: 18px;
+    margin:10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .myAccount{
+    font-weight: 300;
+    font-size: 16px;
+    margin-right: 10px;
+    padding: 0 6px;
+  }
+}
+
 @media (min-width: 768px) {
     .button-74 {
       min-width: 100px;
@@ -227,9 +245,6 @@ nav{
 }
 
 .navbar ul {
-list-style: none;
-margin: 0;
-padding: 0;
 display: flex;
 justify-content: space-evenly;
 align-items: center;
@@ -266,16 +281,15 @@ height: 100%;
   height: auto;
 }
 
-/* Styles spécifiques pour les paragraphes */
 #paragraph {
-  color: #333; /* Couleur du texte */
+  color: #000000; 
   font-size: 1.25rem; 
   line-height: 1.5; 
   margin-bottom: 1em; 
 }
 
 #secondParagraph{
-  color: #333; /* Couleur du texte */
+  color: #000000; 
   font-size: 1.25rem; 
   line-height: 1.5; 
 }
@@ -310,13 +324,13 @@ height: 100%;
 }
 
 input, textarea, select, option{
-    color: black; /* Définir la couleur du texte en noir avec la priorité */
+    color: black; 
     height: 25px;
     margin: 5px;
 }
 
 .label-content {
-    text-align: center; /* Ajoutez cette ligne pour centrer le texte des labels */
+    text-align: center; 
 }
 
 #submit
@@ -337,78 +351,114 @@ input, textarea, select, option{
   font-style:italic;
 }
 
+@media(max-width:400px){
+  .form-content{
+    width: 160px;
+  }
+}
+
 /*************************/
 /*      USER DETAILS     */
 /*************************/
 
-.userContainer{
+ .infoContainer{
   display: flex;
   justify-content: center;
-  flex-direction: column;
   margin: auto;
   flex-wrap: wrap;
-  width: 310px;
+  flex-direction: column;
+  width: 23%;
   border: 2px solid #000000b9; 
   padding: 40px;
   margin-top: 20px;
   color: black
-}
+ }
+
+  #details{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 
 #secondTitle{
   text-align: center;
   margin: 15px;
 }
 
+@media (max-width: 760px) {
+  input#username, input#firstname, input#lastname, input#email, select#gender, select#placeType, input#reservationDate{
+    width: 110px;
+  }
+}
+
+@media (max-width: 500px) {
+  input#username, input#firstname, input#lastname, input#email, select#gender{
+    width: 70px;
+  }
+}
+
 /*************************/
 /*      LOCATION FORM    */
 /*************************/
 
+.userContainer{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  flex-wrap: wrap;
+  width: 23%;
+  border: 2px solid #000000b9; 
+  padding: 40px;
+  margin-top: 20px;
+  color: black
+}
+
 .reservation-form {
-  width: 50%; /* ou la largeur de votre choix */
-  margin: 0 auto; /* centré sur la page */
-  border: 1px solid #ccc; /* bordure comme dans l'image */
+  width: 50%; 
+  margin: 0 auto; 
+  border: 1px solid #ccc; 
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* ombre optionnelle */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
 }
 
 .reservation-form h1 {
-  text-align: center; /* titre centré */
+  text-align: center; 
 }
 
 .form-group,
 .checkbox-group {
-  margin-bottom: 20px; /* espace entre les éléments du formulaire */
+  margin-bottom: 20px; 
 }
 
 .form-group label,
 .checkbox-group label {
-  display: block; /* s'assure que le label est sur sa propre ligne */
+  display: block; 
 }
 
 .form-group select,
 .form-group input[type="date"] {
-  width: 100%; /* largeur complète */
-  margin-top: 5px; /* espace entre le label et l'input */
+  width: 100%; 
+  margin-top: 5px; 
 }
 
 .checkbox-group label {
-  display: inline-block; /* les checkboxes sont sur la même ligne */
-  margin-right: 20px; /* espace entre les checkboxes */
+  display: inline-block; 
+  margin-right: 20px; 
 }
 
 button[type="submit"] {
-  display: block; /* le bouton est sur sa propre ligne */
+  display: block; 
   width: 100%;
   padding: 10px;
   font-size: 14px;
-  background-color: #000; /* couleur de fond du bouton */
-  color: #fff; /* couleur du texte du bouton */
+  background-color: #000; 
+  color: #fff; 
   border: none;
   cursor: pointer;
 }
 
 button[type="submit"]:hover {
-  background-color: #000000a8; /* couleur de fond du bouton */
+  background-color: #000000a8; 
 }
 
 #list{
@@ -430,10 +480,15 @@ button[type="submit"]:hover {
   justify-content: center;
   margin: auto;
   flex-wrap: wrap;
-  width: 310px;
+  width: 25%;
   border: 2px solid #000000b9; 
-  padding: 40px;
+  padding: 20px;
   margin-top: 20px;
+}
+
+#confirmButton{
+  margin:auto;
+  width: 120px;
 }
 
 /*************************/

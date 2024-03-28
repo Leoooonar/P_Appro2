@@ -88,43 +88,56 @@ if (isset($_SESSION['user'])) {
                     </tr>
                 </thead>
                 <tbody>
-                <?php
-                    // Vérifie si une date a été envoyée via POST
-                    if (isset($_POST['refresh']) && !empty($_POST['date'])) {
-                        $selectedDate = $_POST['date'];
-                        $reservations = $db->getReservationsForDate($selectedDate);
-                    } else {
-                        $reservations = $db->getReservationsForDate(date('Y-m-d')); // Ou une autre logique par défaut
-                    }
-                    // Supposons que $reservations est un tableau d'objets ou d'associations
-                    foreach ($reservations as $reservation) {
-                        
-                        if ($reservation['places_fk'] == 1){
-                            $placeType = "Voiture";
+                    <?php
+                        // Vérifie si une date a été envoyée via POST
+                        if (isset($_POST['refresh']) && !empty($_POST['date'])) {
+                            $selectedDate = $_POST['date'];
+                            $reservations = $db->getReservationsForDate($selectedDate);
+                        } else {
+                            $reservations = $db->getReservationsForDate(date('Y-m-d')); // Ou une autre logique par défaut
                         }
-                        elseif ($reservation['places_fk'] == 2){
-                            $placeType = "Camion";
-                        }
-                        elseif ($reservation['places_fk'] == 3){
-                            $placeType = "Vélo électrique";
-                        }
-                        elseif ($reservation['places_fk'] == 4){
-                            $placeType = "Place de direction";
-                        }
-                        else {
-                            $placeType = "Salle de conférence";
-                        }
+                        // Supposons que $reservations est un tableau d'objets ou d'associations
+                        foreach ($reservations as $reservation) {
+                            
+                            if ($reservation['places_fk'] == 1){
+                                $placeType = "Voiture";
+                            }
+                            elseif ($reservation['places_fk'] == 2){
+                                $placeType = "Camion";
+                            }
+                            elseif ($reservation['places_fk'] == 3){
+                                $placeType = "Vélo électrique";
+                            }
+                            elseif ($reservation['places_fk'] == 4){
+                                $placeType = "Place de direction";
+                            }
+                            else {
+                                $placeType = "Salle de conférence";
+                            }
 
-                        $name = $db->getUserNameById($reservation['user_fk']);
+                            $name = $db->getUserNameById($reservation['user_fk']);
 
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
-                        echo "<td>" . htmlspecialchars($placeType) . "</td>";
-                        echo "<td>" . htmlspecialchars($name) . "</td>"; 
-                        echo "<td>" . ($reservation['resMatin'] ? 'Matin' : ($reservation['resApresMidi'] ? 'Après-midi' : 'Non spécifié')) . "</td>";
-                        echo "</tr>";
-                    }
-                ?>
+                            echo "<tr>";
+                                echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
+                                echo "<td>" . htmlspecialchars($placeType) . "</td>";
+                                echo "<td>" . htmlspecialchars($name) . "</td>"; 
+                                echo "<td>";
+                                if ($reservation['resMatin']) {
+                                    echo "Matin";
+                                }
+                                if ($reservation['resMatin'] && $reservation['resApresMidi']) {
+                                    echo " / ";
+                                }
+                                if ($reservation['resApresMidi']) {
+                                    echo "Après-midi";
+                                }
+                                if (!$reservation['resMatin'] && !$reservation['resApresMidi']) {
+                                    echo "Non spécifié";
+                                }
+                                echo "</td>";                        
+                            echo "</tr>";
+                        }
+                    ?>
                 </tbody>
             </table>
         </main>

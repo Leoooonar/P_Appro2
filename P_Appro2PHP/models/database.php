@@ -21,35 +21,39 @@ class Database {
     //Méthode pour préparer et exécuter une requête avec des paramètres
     private function queryPrepare($query, $params = array()) {
         try {
-            // Vérifier si la connexion à la base de données est établie
+            // Vérifie si la connexion à la base de données est établie
             if(!$this->conn) {
                 throw new PDOException("La connexion à la base de données n'est pas établie.");
             }
 
-            // Préparer la requête SQL
+            // Prépare la requête SQL
             $stmt = $this->conn->prepare($query);
 
-            // Vérifier si la préparation de la requête a échoué
+            // Vérifie si la préparation de la requête a échoué
             if(!$stmt) {
                 throw new PDOException("Erreur lors de la préparation de la requête.");
             }
 
-            // Exécuter la requête avec les paramètres fournis
+            // Exécute la requête avec les paramètres fournis
             $result = $stmt->execute($params);
 
-            // Vérifier si l'exécution de la requête a échoué
+            // Vérifie si l'exécution de la requête a échoué
             if(!$result) {
                 throw new PDOException("Erreur lors de l'exécution de la requête.");
             }
 
-            // Retourner l'objet PDOStatement résultant
+            // Retourne l'objet PDOStatement résultant
             return $stmt;
         } catch(PDOException $e) {
-            // Gérer l'erreur
+            // Gère l'erreur
             echo "Error: " . $e->getMessage();
             return false;
         }
     }
+
+    /////////////////////////////////////////////////////////////////////
+    //                      GESTION UTILISATEURS                       //
+    /////////////////////////////////////////////////////////////////////
 
     //Méthode pour vérifier le login
     public function checkLogin($username, $password) {
@@ -63,14 +67,14 @@ class Database {
             return true;
         }
     
-        // Le nom d'utilisateur ou le mot de passe est incorrect, retourne false
+        // si le nom d'utilisateur ou le mot de passe est incorrect, retourne false
         return false;
     }
 
     //Méthode pour enregistrer un nouvel utilisateur
     public function registerUser($username, $password) {
         try {
-            // Hasher le mot de passe
+            // Hashe le mot de passe
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             // Préparer la requête d'insertion
@@ -110,27 +114,23 @@ class Database {
     
             return true; // Retourne true si la mise à jour est réussie
         } catch(PDOException $e) {
-            // Gérer l'erreur
+            // Gère l'erreur
             echo "Error: " . $e->getMessage();
             return false; // Retourne false en cas d'erreur
         }
     }
 
+    /////////////////////////////////////////////////////////////////////
+    //                      GESTION RESERVATIONS                       //
+    /////////////////////////////////////////////////////////////////////
+
+    //Méthode récupérant tous les types de place 
     public function getPlaceTypes() {
         $sql = "SELECT place_id, plaType FROM t_places";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-
-    //Méthode qui renvoie l'ID correct pour le type de place donné
-    public function getPlaceIdByType($typeDePlace) {
-        $stmt = $this->conn->prepare('SELECT place_id FROM t_places WHERE plaType = ?');
-        $stmt->execute([$typeDePlace]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['place_id'] : null;
     }
 
     //Méthode vérifiant si la place est déjà prise ou pas
@@ -209,6 +209,10 @@ class Database {
             return false;
         }
     }      
+
+    /////////////////////////////////////////////////////////////////////
+    //                   GESTION LISTE DES RESERVATIONS                //
+    /////////////////////////////////////////////////////////////////////
 
     //Récupère les réservations pour la liste 
     public function getReservationsForDate($date) {

@@ -21,19 +21,8 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+//On stock dans la session les informations de réservations
 $reservationData = $_SESSION['reservationData'];
-
-// Assurons-nous que les variables sont définies pour éviter des erreurs PHP
-$typeDePlaceId = isset($_POST['placeType']) ? $_POST['placeType'] : '';
-$dateDeReservation = isset($_POST['reservationDate']) ? $_POST['reservationDate'] : '';
-$matin = isset($_POST['morning']) ? "Oui" : "Non";
-$apresMidi = isset($_POST['afternoon']) ? "Oui" : "Non";
-
-// Utiliser la nouvelle méthode pour récupérer le nom du type de place
-$typeDePlaceName = $db->getPlaceTypeNameById($typeDePlaceId);
-
-// Récupérer le prix basé sur l'ID du type de place
-$placePrice = $db->getPlacePriceById($typeDePlaceId);
 ?>
 
 <!DOCTYPE html>
@@ -114,17 +103,17 @@ $placePrice = $db->getPlacePriceById($typeDePlaceId);
                         echo "Informations de réservation non disponibles.";
                     }
                 ?>
-                <!-- Formulaire de confirmation avec champs cachés -->
-                <form action="../../controllers/parkingLocationConfirmationCheck.php" method="post">
-                    <!-- Champs cachés pour la transmission des données -->
-                    <input type="hidden" name="placeType" value="<?= htmlspecialchars($reservationData['typeDePlace']) ?>">
-                    <input type="hidden" name="reservationDate" value="<?= htmlspecialchars($reservationData['dateDeReservation']) ?>">
-                    <input type="hidden" name="morning" value="<?= $reservationData['matin'] ?>">
-                    <input type="hidden" name="afternoon" value="<?= $reservationData['apresMidi'] ?>">
-                    <br>
-                    <button type="submit">Confirmer la réservation</button>
-                </form>
             </div>
+            <!-- Formulaire de confirmation avec champs cachés -->
+            <form action="../../controllers/parkingLocationConfirmationCheck.php" method="post" id="confirmButton">
+                <!-- Champs cachés pour la transmission des données -->
+                <input type="hidden" name="placeType" value="<?= htmlspecialchars($reservationData['typeDePlace']) ?>">
+                <input type="hidden" name="reservationDate" value="<?= htmlspecialchars($reservationData['dateDeReservation']) ?>">
+                <input type="hidden" name="morning" value="<?= $reservationData['matin'] ?>">
+                <input type="hidden" name="afternoon" value="<?= $reservationData['apresMidi'] ?>">
+                <br>
+                <button type="submit">Réserver</button>
+            </form>
         </main>
         <br>
         <footer>

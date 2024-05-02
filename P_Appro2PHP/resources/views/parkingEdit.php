@@ -2,8 +2,8 @@
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 /***************************************************************************************************
 *  *  *   * Auteurs: Leonar                                               *   *  *  *   *  *  *  * *
-*  *  *   * Date: 18.03.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
-*  *  *   * Description : page détails de l'utilisateur                                      * * * *
+*  *  *   * Date: 16.04.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
+*  *  *   * Description : page détails de la réservation                                     * * * *
 ***************************************************************************************************/
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
@@ -20,6 +20,11 @@ if (isset($_SESSION['user'])) {
     header("Location: ./authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
+
+if ($isLoggedIn) {
+    $userId = $user['user_id'];  // Assurez-vous que cet ID est bien stocké lors de la connexion
+    $reservations = $db->getUserReservations($userId);
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +32,7 @@ if (isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil utilisateur</title>
+    <title>Informations réservations</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
     <body>
@@ -44,7 +49,7 @@ if (isset($_SESSION['user'])) {
                             echo '<div class="myAccount">Mon compte</div>';
                             echo '<a href="javascript:void(0)" class="dropbtn"></a>';
                             echo '<div class="dropdown-content">';
-                            echo '<a href="#">Détail du compte</a>';
+                            echo '<a href="userDetails.php">Détail du compte</a>';
                             echo '<a href="parkingEdit.php">Mes réservations</a>';
                             echo '<a href="logout.php">Déconnexion</a>';
                             echo '</div>';
@@ -64,28 +69,51 @@ if (isset($_SESSION['user'])) {
                 </ul>
             </nav>
             <br>
-            <h2 id="secondTitle">Informations générales</h2>
-            <hr>
-            <?php
-                if ($isLoggedIn) {
-                    echo '<div class="infoContainer">';
-                        echo '<p><strong>Nom d\'utilisateur:</strong> ' . $user['useUsername'] . '</p>';
-                        echo '<br>';
-                        echo '<p><strong>Prénom:</strong> ' . ($user['useFirstname'] ?? 'Non renseigné') . '</p>';
-                        echo '<br>';
-                        echo '<p><strong>Nom:</strong> ' . ($user['useLastname'] ?? 'Non renseigné') . '</p>';
-                        echo '<br>';
-                        echo '<p><strong>Adresse e-mail:</strong> ' . ($user['useMail'] ?? 'Non renseignée') . '</p>';
-                        echo '<br>';
-                        echo '<p><strong>Genre:</strong> ' . ($user['useGender'] ?? 'Non renseigné') . '</p>';
-                        echo '<br>';
-
-                        // Bouton d'ajouts/modifications d'informations
-                        echo '<a href="userEditDetails.php"><button type="submit">Modifier</button></a>';
-                    echo '</div>';
-                }
-            ?> 
+            <h2 id="secondTitle">Détails de réservation</h2>
+            <hr>   
+            <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Quand</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <?php
+                        if ($isLoggedIn && isset($reservations)) {
+                            foreach ($reservations as $reservation) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
+                                echo "<td>" . htmlspecialchars($reservation['plaType']) . "</td>";
+                                echo "<td>";
+                                if ($reservation['resMatin']) {
+                                    echo "Matin";
+                                }
+                                if ($reservation['resMatin'] && $reservation['resApresMidi']) {
+                                    echo " / ";
+                                }
+                                if ($reservation['resApresMidi']) {
+                                    echo "Après-midi";
+                                }
+                                if (!$reservation['resMatin'] && !$reservation['resApresMidi']) {
+                                    echo "Non spécifié";
+                                }
+                                echo "</td>";
+                                echo '<td>';
+                                echo '<button onclick="window.location.href=\'parkingLocationEdit.php?edit=' . $reservation['reservation_id'] . '\'">Modifier</button>';
+                                echo '<button onclick="if(confirm(\'Êtes-vous sûr de vouloir supprimer cette réservation?\')) window.location.href=\'parkingDelete.php?delete=' . $reservation['reservation_id'] . '\';">Supprimer</button>';
+                                echo '</td>';
+                                echo "</tr>";
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
         </main>
+        <br>
         <footer>
             <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
         </footer>

@@ -33,8 +33,8 @@ $errors = array();
                 <a href="../../index.php"><img src="../../resources/img/carImg.png" alt="Parking logo" class="headerImage"></a>
             </div>
             <div class="right-content">
-                <a href="../../resources/views/authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>
-                <a href="../../resources/views/authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>
+                <a href="../../resources/views/authentification/login.php"><div class="button-base button-74" role="button">Login</div></a>
+                <a href="../../resources/views/authentification/register.php"><div class="button-base button-74" role="button">Inscription</div></a>
             </div>
         </div>
         <nav class="navbar">

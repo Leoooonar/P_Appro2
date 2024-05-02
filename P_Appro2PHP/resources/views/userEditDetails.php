@@ -45,12 +45,13 @@ if (isset($_SESSION['user'])) {
                             echo '<a href="javascript:void(0)" class="dropbtn"></a>';
                             echo '<div class="dropdown-content">';
                             echo '<a href="userDetails.php">Détail du compte</a>';
+                            echo '<a href="parkingEdit.php">Mes réservations</a>';
                             echo '<a href="logout.php">Déconnexion</a>';
                             echo '</div>';
                             echo '</li>';
                         } else {
-                            echo '<a href="./authentification/login.php"><button class="button-base button-74" role="button">Login</button></a>';
-                            echo '<a href="./authentification/register.php"><button class="button-base button-74" role="button">Inscription</button></a>';
+                            echo '<a href="./authentification/login.php"><div class="button-base button-74" role="button">Login</div></a>';
+                            echo '<a href="./authentification/register.php"><div class="button-base button-74" role="button">Inscription</div></a>';
                         }
                     ?>
                 </div>

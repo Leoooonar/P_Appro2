@@ -446,7 +446,7 @@ input, textarea, select, option{
   margin-right: 20px; 
 }
 
-button[type="submit"] {
+button {
   display: block; 
   width: 100%;
   padding: 10px;
@@ -457,7 +457,7 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+button:hover {
   background-color: #000000a8; 
 }
 

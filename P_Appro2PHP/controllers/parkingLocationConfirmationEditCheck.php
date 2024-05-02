@@ -73,7 +73,8 @@ if (isset($_SESSION['user'])) {
             $reservationData = $_SESSION['reservationData'];
             $userId = $_SESSION['user']['user_id']; // Assure-toi que c'est bien stocké comme ça
         
-            $result = $db->saveReservation(
+            $result = $db->updateReservation(
+                $reservationData['reservation_id'],
                 $reservationData['typeDePlace'],
                 $reservationData['dateDeReservation'],
                 $reservationData['matin'],
@@ -83,7 +84,7 @@ if (isset($_SESSION['user'])) {
             );
             echo '<div id="contentContainer">';
             if ($result) {
-                echo "Réservation confirmée avec succès. ID de réservation: $result";
+                echo "Réservation modifiée avec succès.";
                 unset($_SESSION['reservationData']); // Nettoyer les données de session
             } else {
                 echo "Erreur lors de la confirmation de la réservation.";

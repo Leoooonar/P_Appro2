@@ -40,8 +40,8 @@ if (isset($_SESSION['user'])) {
                             echo '</div>';
                             echo '</li>';
                         } else {
-                            echo '<a href="login.php"><button class="button-base button-74" role="button">Login</button></a>';
-                            echo '<a href="#"><button class="button-base button-74" role="button">Inscription</button></a>';
+                            echo '<a href="login.php"><div class="button-base button-74" role="button">Login</div></a>';
+                            echo '<a href="#"><div class="button-base button-74" role="button">Inscription</div></a>';
                         }
                     ?>
                 </div>

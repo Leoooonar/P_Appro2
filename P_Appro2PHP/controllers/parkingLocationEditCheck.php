@@ -2,8 +2,8 @@
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 /***************************************************************************************************
 *  *  *   * Auteurs: Leonar                                               *   *  *  *   *  *  *  * *
-*  *  *   * Date: 26.03.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
-*  *  *   * Description : page check du formulaire parkingLocation                           * * * *
+*  *  *   * Date: 23.04.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
+*  *  *   * Description : page check du formulaire edit parkingLocation                      * * * *
 ***************************************************************************************************/
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
@@ -78,6 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dateDeReservation = $_POST['reservationDate'] ?? null;
     $matin = isset($_POST['morning']) ? 1 : 0;
     $apresMidi = isset($_POST['afternoon']) ? 1 : 0;
+    $reservationId = $_POST['reservation_id'] ?? null;  // Récupérer l'ID de réservation
+
 
     // Validation
     if (empty($typeDePlace)) {
@@ -94,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Vérification de la disponibilité de la place
     if (count($errors) === 0) {
-        if ($db->isPlaceTaken($dateDeReservation, $matin, $apresMidi, $typeDePlace)) {
+        if ($db->isPlaceTaken($dateDeReservation, $matin, $apresMidi, $typeDePlace, $reservationId)) {
             $errors['placeTaken'] = "La place sélectionnée pour la date et le moment choisis est : <div id='unavailable'>Indisponible</div>";
         } else {
         // Stockage des données dans la session
@@ -102,11 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'typeDePlace' => $typeDePlace,
             'dateDeReservation' => $dateDeReservation,
             'matin' => $matin,
-            'apresMidi' => $apresMidi
+            'apresMidi' => $apresMidi,
+            'reservation_id' => $reservationId
         ];
 
         // Redirection vers la page de confirmation
-        header('Location: ../resources/views/parkingLocationConfirmation.php');
+        header('Location: ../resources/views/parkingLocationConfirmationEdit.php');
     }
 }
     

@@ -13,7 +13,7 @@ class Database {
             $this->conn = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database}", $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            echo "Connection échouée: " . $e->getMessage();
             exit();
         }
     }
@@ -210,32 +210,20 @@ class Database {
         }
     }      
 
+    ///////////////////////////////////////////////////////////////////// 
+    //                   GESTION DES RESERVATIONS                      //
     /////////////////////////////////////////////////////////////////////
-    //                   GESTION LISTE DES RESERVATIONS                //
-    /////////////////////////////////////////////////////////////////////
 
-    //Récupère les réservations pour la liste 
-    public function getReservationsForDate($date) {
-        try {
-            // Préparation de la requête SQL
-            $stmt = $this->conn->prepare("SELECT * FROM t_reservation WHERE resDate = :resDate");
-            
-            // Liaison des paramètres
-            $stmt->bindParam(':resDate', $date);
-
-            // Exécution de la requête
-            $stmt->execute();
-
-            // Récupération des résultats
-            $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $reservations;
-        } catch (PDOException $e) {
-            error_log("Erreur lors de la récupération des réservations : " . $e->getMessage());
-            return []; // Retourne un tableau vide en cas d'erreur
-        }
+    public function getReservationsForWeek($startDate, $endDate) {
+        $sql = "SELECT * FROM t_reservation WHERE resDate BETWEEN :start_date AND :end_date ORDER BY resDate ASC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':start_date', $startDate);
+        $stmt->bindParam(':end_date', $endDate);
+        $stmt->execute();
+        $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $reservations;
     }
-
+    
     //Récupère le nom à partir de la foreignkey de réservation
     public function getUserNameById($userId) {
         try {
@@ -256,6 +244,71 @@ class Database {
         } catch (PDOException $e) {
             error_log("Erreur lors de la récupération du nom de l'utilisateur : " . $e->getMessage());
             return 'Inconnu'; // Retourne une valeur par défaut en cas d'erreur
+        }
+    }
+
+    //Trouve les réservations propre à l'utilisateur
+    function getUserReservations($userId) {
+        $sql = "SELECT r.reservation_id, r.resDate, r.resMatin, r.resApresMidi, r.resStatut, p.plaType, p.plaPrice
+                FROM t_reservation r
+                JOIN t_places p ON r.places_fk = p.place_id
+                WHERE r.user_fk = ?
+                ORDER BY r.resDate ASC";
+        $stmt = $this->queryPrepare($sql, [$userId]);
+        if ($stmt) {
+            $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $reservations;
+        } else {
+            return [];
+        }
+    }
+
+    public function deleteReservation($reservationId, $userId) {
+        try {
+            $stmt = $this->conn->prepare("DELETE FROM t_reservation WHERE reservation_id = ? AND user_fk = ?");
+            $stmt->execute([$reservationId, $userId]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+            return false;
+        }
+    }
+
+    //Récupère l'ID de la réservation
+    public function getReservationById($reservation_id) {
+        $sql = "SELECT * FROM t_reservation WHERE reservation_id = :reservation_id";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':reservation_id', $reservation_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            error_log('Erreur lors de la récupération de la réservation: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    //update les informations de réservation
+    public function updateReservation($reservation_id, $placeType, $reservationDate, $morning, $afternoon) {
+        $sql = "UPDATE t_reservation SET 
+                    places_fk = :placeType, 
+                    resDate = :reservationDate, 
+                    resMatin = :morning, 
+                    resApresMidi = :afternoon
+                WHERE reservation_id = :reservation_id";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':placeType', $placeType, PDO::PARAM_INT);
+            $stmt->bindParam(':reservationDate', $reservationDate);
+            $stmt->bindParam(':morning', $morning, PDO::PARAM_BOOL);
+            $stmt->bindParam(':afternoon', $afternoon, PDO::PARAM_BOOL);
+            $stmt->bindParam(':reservation_id', $reservation_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            error_log('Erreur lors de la mise à jour de la réservation: ' . $e->getMessage());
+            return false;
         }
     }
 }

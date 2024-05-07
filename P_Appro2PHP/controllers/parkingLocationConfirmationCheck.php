@@ -22,9 +22,7 @@ if (isset($_SESSION['user'])) {
     header("Location: ./authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,7 +33,7 @@ if (isset($_SESSION['user'])) {
 </head>
 <body>
     <main>
-        <div id="headContainer">
+    <div id="headContainer">
             <div class="left-content">
                 <a href="../index.php"><img src="../resources/img/etmlImg.jpg" alt="ETML logo" class="headerImage"></a>
                 <a href="../index.php"><img src="../resources/img/carImg.png" alt="Parking logo" class="headerImage"></a>
@@ -68,38 +66,43 @@ if (isset($_SESSION['user'])) {
         </nav>
         <br>
         <?php
-        // Vérification de la méthode de requête
+        // Vérification de la méthode de requête et des données disponibles
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['reservationData'])) {
+            // Extraction des données de la réservation à partir de la session
             $reservationData = $_SESSION['reservationData'];
-            $userId = $_SESSION['user']['user_id']; // Assure-toi que c'est bien stocké comme ça
-        
+            $userId = $_SESSION['user']['user_id']; // Assure-toi que l'ID de l'utilisateur est bien stocké dans la session
+
+            // Appel de la méthode de sauvegarde de la réservation avec les heures de début et de fin
             $result = $db->saveReservation(
                 $reservationData['typeDePlace'],
                 $reservationData['dateDeReservation'],
-                $reservationData['matin'],
-                $reservationData['apresMidi'],
-                "En attente", // Statut par défaut
+                $reservationData['startTime'], // Heure de début
+                $reservationData['endTime'],   // Heure de fin
+                "En attente",                 // Statut par défaut
                 $userId
             );
+
             echo '<div id="contentContainer">';
             if ($result) {
                 echo "Réservation confirmée avec succès. ID de réservation: $result";
-                unset($_SESSION['reservationData']); // Nettoyer les données de session
+                echo '<br>';
+                unset($_SESSION['reservationData']); // Nettoyer les données de session après la confirmation
             } else {
                 echo "Erreur lors de la confirmation de la réservation.";
+                echo '<br>';
             }
         } else {
             // Gérer le cas d'erreur ou de tentative d'accès direct à ce script
-            echo "Accès non autorisé ou données manquantes.";
+            echo '<div id="contentContainer">Accès non autorisé ou données manquantes.';
+            echo '<br>';
         }
         ?>
         <br>
         <a id="pageBefore" href="../index.php">Retour à l'accueil</a>
-    </div>
+        </div>
     </main>
     <footer>
         <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
     </footer>
 </body>
 </html>
-

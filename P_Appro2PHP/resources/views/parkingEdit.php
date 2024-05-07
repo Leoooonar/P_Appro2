@@ -72,44 +72,40 @@ if ($isLoggedIn) {
             <h2 id="secondTitle">Détails de réservation</h2>
             <hr>   
             <br>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Quand</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Plage horaire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <?php
-                        if ($isLoggedIn && isset($reservations)) {
-                            foreach ($reservations as $reservation) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
-                                echo "<td>" . htmlspecialchars($reservation['plaType']) . "</td>";
-                                echo "<td>";
-                                if ($reservation['resMatin']) {
-                                    echo "Matin";
-                                }
-                                if ($reservation['resMatin'] && $reservation['resApresMidi']) {
-                                    echo " / ";
-                                }
-                                if ($reservation['resApresMidi']) {
-                                    echo "Après-midi";
-                                }
-                                if (!$reservation['resMatin'] && !$reservation['resApresMidi']) {
-                                    echo "Non spécifié";
-                                }
-                                echo "</td>";
-                                echo '<td>';
-                                echo '<button onclick="window.location.href=\'parkingLocationEdit.php?edit=' . $reservation['reservation_id'] . '\'">Modifier</button>';
-                                echo '<button onclick="if(confirm(\'Êtes-vous sûr de vouloir supprimer cette réservation?\')) window.location.href=\'parkingDelete.php?delete=' . $reservation['reservation_id'] . '\';">Supprimer</button>';
-                                echo '</td>';
-                                echo "</tr>";
+                <?php
+                    if ($isLoggedIn && isset($reservations)) {
+                        foreach ($reservations as $reservation) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
+                            echo "<td>" . htmlspecialchars($reservation['plaType']) . "</td>";
+                            echo "<td>";
+                            // Affichage des plages horaires 
+                            if (isset($reservation['resStartTime']) && isset($reservation['resEndTime'])) {
+                                $startTime = date('H:i', strtotime($reservation['resStartTime'])); 
+                                $endTime = date('H:i', strtotime($reservation['resEndTime'])); 
+                                echo htmlspecialchars($startTime) . " - " . htmlspecialchars($endTime);
+                            } else {
+                                echo "Non spécifié";
                             }
+                            echo "</td>";
+                            echo '<td>';
+                            echo '<button onclick="window.location.href=\'parkingLocationEdit.php?edit=' . $reservation['reservation_id'] . '\'">Modifier</button>';
+                            echo '<button class="delete-button" onclick="if(confirm(\'Êtes-vous sûr de vouloir supprimer cette réservation?\')) window.location.href=\'parkingDelete.php?delete=' . $reservation['reservation_id'] . '\';">Supprimer</button>';
+                            echo '</td>';
+                            echo "</tr>";
                         }
-                    ?>
+                    }
+                ?>
                 </tbody>
             </table>
         </main>

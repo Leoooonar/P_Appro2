@@ -22,8 +22,8 @@ CREATE TABLE t_places (
 CREATE TABLE t_reservation (
     reservation_id INT NOT NULL AUTO_INCREMENT,
     resDate DATE NOT NULL,
-    resMatin BOOLEAN NOT NULL,
-    resApresMidi BOOLEAN NOT NULL,
+    resStartTime TIME NOT NULL,
+    resEndTime TIME NOT NULL,
     resStatut varchar(50) NOT NULL,
     places_fk INT NOT NULL,
     user_fk INT NOT NULL,

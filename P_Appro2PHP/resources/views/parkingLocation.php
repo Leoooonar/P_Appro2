@@ -93,15 +93,13 @@ $placeTypes = $db->getPlaceTypes();
                         <label for="reservationDate">Date de réservation :</label>
                         <input type="date" name="reservationDate" id="reservationDate">
                     </div>
-                    <div class="checkbox-group">
-                        <label>
-                            <input type="checkbox" name="morning" id="morning">
-                            Le matin
-                        </label>
-                        <label>
-                            <input type="checkbox" name="afternoon" id="afternoon">
-                            L'après-midi
-                        </label>
+                    <div class="form-group">
+                        <label for="startTime">Heure de début :</label>
+                        <input type="time" name="startTime" id="startTime" min="07:00" max="18:00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">Heure de fin :</label>
+                        <input type="time" name="endTime" id="endTime" min="07:00" max="18:00" required>
                     </div>
                     <button type="submit">Suivant</button>
                 </form>

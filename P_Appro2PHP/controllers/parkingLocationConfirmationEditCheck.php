@@ -22,7 +22,6 @@ if (isset($_SESSION['user'])) {
     header("Location: ./authentification/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>

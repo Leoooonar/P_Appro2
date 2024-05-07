@@ -133,22 +133,25 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //Méthode vérifiant si la place est déjà prise ou pas
-    public function isPlaceTaken($dateDeReservation, $matin, $apresMidi, $typeDePlace) {
-        $sql = "SELECT COUNT(*) FROM t_reservation 
-                WHERE resDate = :dateDeReservation 
-                AND ((resMatin = :matin AND :matin = 1) OR (resApresMidi = :apresMidi AND :apresMidi = 1))
-                AND places_fk = :typeDePlace";
+    // Méthode vérifiant si la place est déjà prise ou pas selon les plages horaires
+    public function isPlaceTaken($dateDeReservation, $startTime, $endTime, $typeDePlace) {
+        $sql = "SELECT COUNT(*) FROM t_reservation
+                WHERE resDate = :dateDeReservation
+                AND places_fk = :typeDePlace
+                AND NOT (
+                    resEndTime <= :startTime OR
+                    resStartTime >= :endTime
+                )";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             ':dateDeReservation' => $dateDeReservation,
-            ':matin' => $matin,
-            ':apresMidi' => $apresMidi,
+            ':startTime' => $startTime,
+            ':endTime' => $endTime,
             ':typeDePlace' => $typeDePlace
         ]);
-    
+
         return $stmt->fetchColumn() > 0;
-    }    
+    } 
 
     //Récupère les informations d'une réservation spécifique
     public function getReservationDetailsById($reservationId) {
@@ -183,24 +186,25 @@ class Database {
         return $plaType;
     }
 
-    // Enregistre la réservation de place de parking dans la db
-    public function saveReservation($typeDePlace, $dateDeReservation, $matin, $apresMidi, $resStatut, $userId) {
+    // Enregistre la réservation de place de parking dans la db avec des horaires précis
+    public function saveReservation($typeDePlace, $dateDeReservation, $startTime, $endTime, $resStatut, $userId) {
         try {
             // Préparation de la requête d'insertion
-            $sql = "INSERT INTO t_reservation (resDate, resMatin, resApresMidi, resStatut, places_fk, user_fk) VALUES (:dateDeReservation, :matin, :apresMidi, :resStatut, :typeDePlace, :userId)";
+            $sql = "INSERT INTO t_reservation (resDate, resStartTime, resEndTime, resStatut, places_fk, user_fk)
+                    VALUES (:dateDeReservation, :startTime, :endTime, :resStatut, :typeDePlace, :userId)";
             $stmt = $this->conn->prepare($sql);
-    
+
             // Liaison des paramètres
             $stmt->bindParam(':dateDeReservation', $dateDeReservation);
-            $stmt->bindParam(':matin', $matin, PDO::PARAM_BOOL);
-            $stmt->bindParam(':apresMidi', $apresMidi, PDO::PARAM_BOOL);
+            $stmt->bindParam(':startTime', $startTime);
+            $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':resStatut', $resStatut);
             $stmt->bindParam(':typeDePlace', $typeDePlace, PDO::PARAM_INT);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-    
+
             // Exécution de la requête
             $stmt->execute();
-    
+
             // Retourne l'ID de la réservation insérée
             return $this->conn->lastInsertId();
         } catch (PDOException $e) {
@@ -208,14 +212,21 @@ class Database {
             error_log("Erreur lors de l'insertion de la réservation: " . $e->getMessage());
             return false;
         }
-    }      
+    }
+    
 
     ///////////////////////////////////////////////////////////////////// 
     //                   GESTION DES RESERVATIONS                      //
     /////////////////////////////////////////////////////////////////////
 
     public function getReservationsForWeek($startDate, $endDate) {
-        $sql = "SELECT * FROM t_reservation WHERE resDate BETWEEN :start_date AND :end_date ORDER BY resDate ASC";
+        // Jointure avec la table t_places pour obtenir les détails de la place
+        $sql = "SELECT r.*, p.plaType, p.plaPrice
+                FROM t_reservation r
+                JOIN t_places p ON r.places_fk = p.place_id
+                WHERE r.resDate BETWEEN :start_date AND :end_date
+                ORDER BY r.resDate ASC, r.resStartTime ASC"; // Ajouté tri par heure de début si nécessaire
+    
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':start_date', $startDate);
         $stmt->bindParam(':end_date', $endDate);
@@ -247,13 +258,13 @@ class Database {
         }
     }
 
-    //Trouve les réservations propre à l'utilisateur
+    // Trouve les réservations propre à l'utilisateur avec les heures de début et de fin
     function getUserReservations($userId) {
-        $sql = "SELECT r.reservation_id, r.resDate, r.resMatin, r.resApresMidi, r.resStatut, p.plaType, p.plaPrice
+        $sql = "SELECT r.reservation_id, r.resDate, r.resStartTime, r.resEndTime, r.resStatut, p.plaType, p.plaPrice
                 FROM t_reservation r
                 JOIN t_places p ON r.places_fk = p.place_id
                 WHERE r.user_fk = ?
-                ORDER BY r.resDate ASC";
+                ORDER BY r.resDate ASC, r.resStartTime ASC";
         $stmt = $this->queryPrepare($sql, [$userId]);
         if ($stmt) {
             $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -262,6 +273,7 @@ class Database {
             return [];
         }
     }
+
 
     public function deleteReservation($reservationId, $userId) {
         try {
@@ -287,22 +299,22 @@ class Database {
             error_log('Erreur lors de la récupération de la réservation: ' . $e->getMessage());
             return false;
         }
-    }
+    }   
 
-    //update les informations de réservation
-    public function updateReservation($reservation_id, $placeType, $reservationDate, $morning, $afternoon) {
+    // Mise à jour des informations de réservation avec des heures de début et de fin spécifiques
+    public function updateReservation($reservation_id, $placeType, $reservationDate, $startTime, $endTime) {
         $sql = "UPDATE t_reservation SET 
                     places_fk = :placeType, 
                     resDate = :reservationDate, 
-                    resMatin = :morning, 
-                    resApresMidi = :afternoon
+                    resStartTime = :startTime, 
+                    resEndTime = :endTime
                 WHERE reservation_id = :reservation_id";
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':placeType', $placeType, PDO::PARAM_INT);
             $stmt->bindParam(':reservationDate', $reservationDate);
-            $stmt->bindParam(':morning', $morning, PDO::PARAM_BOOL);
-            $stmt->bindParam(':afternoon', $afternoon, PDO::PARAM_BOOL);
+            $stmt->bindParam(':startTime', $startTime);
+            $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':reservation_id', $reservation_id, PDO::PARAM_INT);
             $stmt->execute();
             return true;

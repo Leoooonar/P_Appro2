@@ -532,6 +532,14 @@ tr:nth-child(even) {
   width: 20%;
 }
 
+.delete-button{
+  background-color: rgb(173, 55, 55);
+}
+
+.delete-button:hover{
+  background-color: rgba(199, 0, 0, 0.993);
+}
+
 /*************************/
 /*        FOOTER         */
 /*************************/

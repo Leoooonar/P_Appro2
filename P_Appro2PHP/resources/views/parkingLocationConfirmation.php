@@ -1,12 +1,4 @@
 <?php
-/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-/***************************************************************************************************
-*  *  *   * Auteurs: Leonar                                               *   *  *  *   *  *  *  * *
-*  *  *   * Date: 18.03.2024  // ETML - Lausanne - Vennes                 *   *  *  *   *  *  *  * *
-*  *  *   * Description : page détails de l'utilisateur                                      * * * *
-***************************************************************************************************/
-/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-
 session_start();
 include("../../models/database.php");
 $db = new Database();
@@ -21,8 +13,12 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-//On stock dans la session les informations de réservations
-$reservationData = $_SESSION['reservationData'];
+// On stock dans la session les informations de réservations
+$reservationData = $_SESSION['reservationData'] ?? null;
+if (!$reservationData) {
+    header("Location: parkingLocation.php"); // Rediriger si aucune donnée de réservation n'est disponible
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,9 +29,9 @@ $reservationData = $_SESSION['reservationData'];
     <title>Confirmation réservation parking</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-    <body>
-        <main>
-            <div id="headContainer">
+<body>
+    <main>
+    <div id="headContainer">
                 <div class="left-content">
                     <a href="../../index.php"><img src="../img/etmlImg.jpg" alt="ETML logo" class="headerImage"></a>
                     <a href="../../index.php"><img src="../img/carImg.png" alt="Parking logo" class="headerImage"></a>
@@ -67,59 +63,44 @@ $reservationData = $_SESSION['reservationData'];
                 </ul>
             </nav>
             <br>
-            <h2 id="secondTitle">Réserver une place de parking</h2>
-            <hr>
-            <div id="contentContainer">
-                <div id="textBlock">
-                    <p id="secondParagraph">
-                        La place de parking est :
-                        <br>
-                        <span id="available">Disponible</span>
-                        <br>
-                        Veuillez vérifier les informations avant de procéder à la confirmation.
-                    </p>
-                </div>
-            </div>    
-            <div class="parkingReservation">
-                <?php
-                    if (isset($_SESSION['reservationData'])) {
-                        $reservationData = $_SESSION['reservationData'];
-                        $typeDePlace = $reservationData['typeDePlace'];
-                        $dateDeReservation = $reservationData['dateDeReservation'];
-                        $matin = $reservationData['matin'];
-                        $apresMidi = $reservationData['apresMidi'];
+        <!-- Contenu du headContainer et navbar -->
+        <h2 id="secondTitle">Confirmation de votre réservation</h2>
+        <hr>
+        <div id="contentContainer">
+            <p id="secondParagraph">
+                Vérifiez les détails de votre réservation avant de confirmer :
+            </p>
+        </div>    
+        <div class="parkingReservation">
+            <?php
+                $typeDePlace = $reservationData['typeDePlace'];
+                $dateDeReservation = $reservationData['dateDeReservation'];
+                $startTime = $reservationData['startTime'];
+                $endTime = $reservationData['endTime'];
 
-                        // Utiliser $typeDePlace pour récupérer le nom du type de place et le prix
-                        $typeDePlaceName = $db->getPlaceTypeNameById($typeDePlace);
-                        $placePrice = $db->getPlacePriceById($typeDePlace);
+                // Utiliser $typeDePlace pour récupérer le nom du type de place et le prix
+                $typeDePlaceName = $db->getPlaceTypeNameById($typeDePlace);
+                $placePrice = $db->getPlacePriceById($typeDePlace);
 
-                        // Affichage des informations
-                        echo "Type de place: " . htmlspecialchars($typeDePlaceName) . "<br>";
-                        echo "Date de réservation: " . htmlspecialchars($dateDeReservation) . "<br>";
-                        echo "Matin: " . ($matin ? "Oui" : "Non") . "<br>";
-                        echo "Après-midi: " . ($apresMidi ? "Oui" : "Non") . "<br>";
-                        echo "Prix à payer : " . $placePrice . " CHF<br>";
-                    } else {
-                        // Gérer le cas où les données ne sont pas disponibles
-                        echo "Informations de réservation non disponibles.";
-                    }
-                ?>
-            </div>
-            <!-- Formulaire de confirmation avec champs cachés -->
-            <form action="../../controllers/parkingLocationConfirmationCheck.php" method="post" id="confirmButton">
-                <!-- Champs cachés pour la transmission des données -->
-                <input type="hidden" name="placeType" value="<?= htmlspecialchars($reservationData['typeDePlace']) ?>">
-                <input type="hidden" name="reservationDate" value="<?= htmlspecialchars($reservationData['dateDeReservation']) ?>">
-                <input type="hidden" name="morning" value="<?= $reservationData['matin'] ?>">
-                <input type="hidden" name="afternoon" value="<?= $reservationData['apresMidi'] ?>">
-                <br>
-                <button type="submit">Réserver</button>
-            </form>
-        </main>
-        <br>
-        <footer>
-            <p class="item-2">Leonar Dupuis<br><a id="mail" href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
-        </footer>
-    </body>
+                echo "Type de place: " . htmlspecialchars($typeDePlaceName) . "<br>";
+                echo "Date de réservation: " . htmlspecialchars($dateDeReservation) . "<br>";
+                echo "Heure de début: " . htmlspecialchars($startTime) . "<br>";
+                echo "Heure de fin: " . htmlspecialchars($endTime) . "<br>";
+                echo "Prix à payer : " . htmlspecialchars($placePrice) . " CHF<br>";
+            ?>
+        </div>
+        <!-- Formulaire de confirmation avec champs cachés -->
+        <form action="../../controllers/parkingLocationConfirmationCheck.php" method="post" id="confirmButton">
+            <input type="hidden" name="placeType" value="<?= htmlspecialchars($reservationData['typeDePlace']) ?>">
+            <input type="hidden" name="reservationDate" value="<?= htmlspecialchars($reservationData['dateDeReservation']) ?>">
+            <input type="hidden" name="startTime" value="<?= htmlspecialchars($reservationData['startTime']) ?>">
+            <input type="hidden" name="endTime" value="<?= htmlspecialchars($reservationData['endTime']) ?>">
+            <br>
+            <button type="submit">Confirmer la réservation</button>
+        </form>
+    </main>
+    <footer>
+        <p>Leonar Dupuis<br><a href="mailto:P_Appro2@gmail.com">P_Appro2@gmail.com</a></p> 
+    </footer>
+</body>
 </html>
-

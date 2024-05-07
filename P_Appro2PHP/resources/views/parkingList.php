@@ -83,6 +83,7 @@ if (isset($_SESSION['user'])) {
                 <thead>
                     <tr>
                         <th>Date</th>
+                        <th>Jour</th>
                         <th>Type</th>
                         <th>Nom</th>
                         <th>Quand</th>
@@ -90,52 +91,39 @@ if (isset($_SESSION['user'])) {
                 </thead>
                 <tbody>
                     <?php
+                        // Définition de la locale en français
+                        setlocale(LC_TIME, 'fr_FR.UTF-8', 'French_France.1252');
+
                         // Vérifie si une semaine a été envoyée via POST
                         if (isset($_POST['refresh']) && !empty($_POST['week'])) {
                             $selectedWeek = $_POST['week'];
-                            // Convertir le format de la semaine sélectionnée en une plage de dates
+                            // Converti le format de la semaine sélectionnée en une plage de dates
                             $startDate = date("Y-m-d", strtotime($selectedWeek));
                             $endDate = date("Y-m-d", strtotime($selectedWeek . " +6 days"));
                             $reservations = $db->getReservationsForWeek($startDate, $endDate);
                         } else {
-                            // Si aucune semaine n'est sélectionnée, utiliser la semaine actuelle
+                            // Si aucune semaine n'est sélectionnée, utilise la semaine actuelle
                             $currentDate = date("Y-m-d");
                             $startDate = date("Y-m-d", strtotime("last Monday", strtotime($currentDate)));
                             $endDate = date("Y-m-d", strtotime("next Sunday", strtotime($currentDate)));
                             $reservations = $db->getReservationsForWeek($startDate, $endDate); 
                         }
                         foreach ($reservations as $reservation) {
-                            if ($reservation['places_fk'] == 1){
-                                $placeType = "Voiture";
-                            }
-                            elseif ($reservation['places_fk'] == 2){
-                                $placeType = "Camion";
-                            }
-                            elseif ($reservation['places_fk'] == 3){
-                                $placeType = "Vélo électrique";
-                            }
-                            elseif ($reservation['places_fk'] == 4){
-                                $placeType = "Place de direction";
-                            }
-                            else {
-                                $placeType = "Salle de conférence";
-                            }
+                            $placeType = $reservation['plaType']; 
                             $name = $db->getUserNameById($reservation['user_fk']);
+                            $dayOfWeek = strftime('%A', strtotime($reservation['resDate'])); // Jour en francais
+                        
                             echo "<tr>";
                             echo "<td>" . htmlspecialchars($reservation['resDate']) . "</td>";
+                            echo "<td>" . htmlspecialchars($dayOfWeek) . "</td>"; 
                             echo "<td>" . htmlspecialchars($placeType) . "</td>";
                             echo "<td>" . htmlspecialchars($name) . "</td>"; 
                             echo "<td>";
-                            if ($reservation['resMatin']) {
-                                echo "Matin";
-                            }
-                            if ($reservation['resMatin'] && $reservation['resApresMidi']) {
-                                echo " / ";
-                            }
-                            if ($reservation['resApresMidi']) {
-                                echo "Après-midi";
-                            }
-                            if (!$reservation['resMatin'] && !$reservation['resApresMidi']) {
+                            if (!empty($reservation['resStartTime']) && !empty($reservation['resEndTime'])) {
+                                $startTime = date('H:i', strtotime($reservation['resStartTime']));
+                                $endTime = date('H:i', strtotime($reservation['resEndTime']));
+                                echo htmlspecialchars($startTime) . " - " . htmlspecialchars($endTime);
+                            } else {
                                 echo "Non spécifié";
                             }
                             echo "</td>";                        
